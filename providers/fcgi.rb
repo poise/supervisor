@@ -1,9 +1,9 @@
 #
-# Author:: Noah Kantrowitz <noah@opscode.com>
+# Author:: Gilles Devaux <gilles.devaux@gmail.com>
 # Cookbook Name:: supervisor
-# Provider:: service
+# Provider:: fcgi
 #
-# Copyright:: 2011, Opscode, Inc <legal@opscode.com>
+# Copyright:: 2011, Formspring.me
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

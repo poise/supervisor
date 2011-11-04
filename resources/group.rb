@@ -1,7 +1,7 @@
 #
-# Author:: Gilles Devaux <gilles@formspring.me>
+# Author:: Gilles Devaux <gilles.devaux@gmail.com>
 # Cookbook Name:: supervisor
-# Resource:: service
+# Resource:: group
 #
 # Copyright:: 2011, Formspring.me
 #
