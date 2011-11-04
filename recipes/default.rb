@@ -47,14 +47,14 @@ end
 case node['platform']
 when "debian", "ubuntu"
   template "/etc/init.d/supervisor" do
-    source "debian/supervisor.init.erb"
+    source "supervisor.init.erb"
     owner "root"
     group "root"
     mode "755"
   end
 
   template "/etc/default/supervisor" do
-    source "debian/supervisor.default.erb"
+    source "supervisor.default.erb"
     owner "root"
     group "root"
     mode "644"
