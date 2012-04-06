@@ -48,25 +48,33 @@ action :disable do
 end
 
 action :start do
-  execute "supervisorctl start #{new_resource.service_name}" do
+  execute "supervisorctl start #{cmd_line_args}" do
     user "root"
   end
 end
 
 action :stop do
-  execute "supervisorctl stop #{new_resource.service_name}" do
+  execute "supervisorctl stop #{cmd_line_args}" do
     user "root"
   end
 end
 
 action :restart  do
-  execute "supervisorctl restart #{new_resource.service_name}" do
+  execute "supervisorctl restart #{cmd_line_args}" do
     user "root"
   end
 end
 
 action :reload  do
-  execute "supervisorctl restart #{new_resource.service_name}" do
+  execute "supervisorctl restart #{cmd_line_args}" do
     user "root"
   end
+end
+
+def cmd_line_args
+  name = new_resource.service_name
+  if new_resource.numprocs > 1
+    name += ':*'
+  end
+  name
 end
