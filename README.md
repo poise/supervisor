@@ -43,8 +43,9 @@ The default action is the array `[:enable, :start]`. Actions use the
 * `:service_name` - (*Name Attribute*), a string, name of the service
 
 The following attributes are used in the program.conf.erb as the
-values for the corresponding configuration option. See
-resources/service.rb for default values.
+values for the corresponding configuration option. See [the supervisor
+documentation](http://supervisord.org/configuration.html#program-x-section-values)
+for more information about each setting, including applicable defaults.
 
 * `:command` - string
 * `:process_name` - string
@@ -98,9 +99,11 @@ License and Author
 ==================
 
 Author:: Noah Kantrowitz <noah@opscode.com>
+
 Author:: Gilles Devaux <gilles.devaux@gmail.com>
 
 Copyright:: 2011-2012, Opscode, Inc <legal@opscode.com>
+
 Copyright:: 2011, Formspring.me
 
 Licensed under the Apache License, Version 2.0 (the "License");
