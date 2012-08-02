@@ -63,7 +63,7 @@ for more information about each setting, including applicable defaults.
 * `:redirect_stderr` - true or false
 * `:stdout_logfile` - string 
 * `:stdout_logfile_maxbytes` - string
-* `:stdout_logfile_backups` - string
+* `:stdout_logfile_backups` - integer
 * `:stdout_capture_maxbytes` - string
 * `:stdout_events_enabled` - true or false
 * `:stderr_logfile` - string
