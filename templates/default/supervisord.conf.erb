@@ -24,5 +24,13 @@ serverurl=unix:///var/run//supervisor.sock ; use a unix:// URL  for a unix socke
 ; interpreted as relative to this file.  Included files *cannot*
 ; include files themselves.
 
+<%- if @node['supervisor']['inet_http_server']['enable'] %>
+[inet_http_server]
+port = <%= %w{ node['supervisor']['inet_http_server']['host'] node['supervisor']['inet_http_server']['port'] }.join(":") %>
+username = <%= @node['supervisor']['inet_http_server']['username'] %>
+password = <%= @node['supervisor']['inet_http_server']['password'] %>
+<%- end %>
+
+
 [include]
 files = <%= @node['supervisor']['dir'] %>/*.conf
