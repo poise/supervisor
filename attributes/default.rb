@@ -24,5 +24,5 @@ default['supervisor']['log_dir'] = '/var/log/supervisor'
 default['supervisor']['inet_http_server']['enable'] = false
 default['supervisor']['inet_http_server']['port'] = '9001'
 default['supervisor']['inet_http_server']['host'] = '127.0.0.1'
-default['supervisor']['inet_http_server']['username'] = 
-default['supervisor']['inet_http_server']['password'] = 
+default['supervisor']['inet_http_server']['username'] = nil 
+default['supervisor']['inet_http_server']['password'] = nil
