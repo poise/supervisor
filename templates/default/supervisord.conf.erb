@@ -26,7 +26,7 @@ serverurl=unix://<% @node['supervisor']['unix_http_server']['file'] %>  ; use a 
 
 <%- if @node['supervisor']['inet_http_server']['enable'] %>
 [inet_http_server]
-port = <%= [ node['supervisor']['inet_http_server']['host'], node['supervisor']['inet_http_server']['port'] ].join(":") %>
+port = <%= @node['supervisor']['inet_http_server']['host'] %>:<%= @node['supervisor']['inet_http_server']['port'] %>
 
 <%- if @node['supervisor']['inet_http_server']['username'] %>
 username = <%= @node['supervisor']['inet_http_server']['username'] %>
