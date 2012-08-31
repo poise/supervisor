@@ -30,8 +30,11 @@ port = <%= @node['supervisor']['inet_http_server']['host'] %>:<%= @node['supervi
 
 <%- if @node['supervisor']['inet_http_server']['username'] %>
 username = <%= @node['supervisor']['inet_http_server']['username'] %>
+<%- if @node['supervisor']['inet_http_server']['password'] %>
 password = <%= @node['supervisor']['inet_http_server']['password'] %>
 <%- end %>
+<%- end %>
+
 
 
 [include]
