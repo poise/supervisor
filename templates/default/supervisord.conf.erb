@@ -16,11 +16,7 @@ childlogdir=<%= @node['supervisor']['log_dir'] %>            ; ('AUTO' child log
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
 [supervisorctl]
-<%- if @node['supervisor']['inet_http_server']['enable'] %>
-serverurl=http://<%= %w{ node['supervisor']['inet_http_server']['host'] node['supervisor']['inet_http_server']['port'] }.join(":") %>
-<%- else %>
 serverurl=unix://<% @node['supervisor']['unix_http_server']['file'] %>  ; use a unix:// URL  for a unix socket
-<%- end %>
 
 ; The [include] section can just contain the "files" setting.  This
 ; setting can list multiple files (separated by whitespace or
@@ -30,7 +26,9 @@ serverurl=unix://<% @node['supervisor']['unix_http_server']['file'] %>  ; use a 
 
 <%- if @node['supervisor']['inet_http_server']['enable'] %>
 [inet_http_server]
-port = <%= %w{ node['supervisor']['inet_http_server']['host'] node['supervisor']['inet_http_server']['port'] }.join(":") %>
+port = <%= [ node['supervisor']['inet_http_server']['host'], node['supervisor']['inet_http_server']['port'] ].join(":") %>
+
+<%- if @node['supervisor']['inet_http_server']['username'] %>
 username = <%= @node['supervisor']['inet_http_server']['username'] %>
 password = <%= @node['supervisor']['inet_http_server']['password'] %>
 <%- end %>
