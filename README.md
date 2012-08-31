@@ -19,6 +19,11 @@ Attributes
 
 * `node['supervisor']['dir']` - location of supervisor config files
 * `node['supervisor']['log_dir']` - location of supervisor logs
+* `node['supervisor']['inet_http_server']['enable']` - enable/disable web interface
+* `node['supervisor']['inet_http_server']['host']` - web interface host to listen
+* `node['supervisor']['inet_http_server']['port']` - web interface port
+* `node['supervisor']['inet_http_server']['username']` - web interface username
+* `node['supervisor']['inet_http_server']['password']` - web interface password
 
 Resources/Providers
 ===================
