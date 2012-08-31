@@ -1,7 +1,7 @@
 ; supervisor config file
 
 [unix_http_server]
-file=/var/run//supervisor.sock   ; (the path to the socket file)
+file=<% @node['supervisor']['unix_http_server']['file'] %>  ; (the path to the socket file)
 chmod=0700                       ; sockef file mode (default 0700)
 
 [supervisord]
@@ -16,7 +16,11 @@ childlogdir=<%= @node['supervisor']['log_dir'] %>            ; ('AUTO' child log
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
 [supervisorctl]
-serverurl=unix:///var/run//supervisor.sock ; use a unix:// URL  for a unix socket
+<%- if @node['supervisor']['inet_http_server']['enable'] %>
+serverurl=http://<%= %w{ node['supervisor']['inet_http_server']['host'] node['supervisor']['inet_http_server']['port'] }.join(":") %>
+<%- else %>
+serverurl=unix://<% @node['supervisor']['unix_http_server']['file'] %>  ; use a unix:// URL  for a unix socket
+<%- end %>
 
 ; The [include] section can just contain the "files" setting.  This
 ; setting can list multiple files (separated by whitespace or
