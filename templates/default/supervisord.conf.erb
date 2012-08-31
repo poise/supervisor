@@ -24,18 +24,16 @@ serverurl=unix://<% @node['supervisor']['unix_http_server']['file'] %>  ; use a 
 ; interpreted as relative to this file.  Included files *cannot*
 ; include files themselves.
 
-<%- if @node['supervisor']['inet_http_server']['enable'] %>
+<% if @node['supervisor']['inet_http_server']['enable'] %>
 [inet_http_server]
 port = <%= @node['supervisor']['inet_http_server']['host'] %>:<%= @node['supervisor']['inet_http_server']['port'] %>
-
-<%- if @node['supervisor']['inet_http_server']['username'] %>
+<% if @node['supervisor']['inet_http_server']['username'] %>
 username = <%= @node['supervisor']['inet_http_server']['username'] %>
-<%- end %>
-<%- if @node['supervisor']['inet_http_server']['password'] %>
+<% end %>
+<% if @node['supervisor']['inet_http_server']['password'] %>
 password = <%= @node['supervisor']['inet_http_server']['password'] %>
-<%- end %>
-
-
+<% end %>
+<% end %>
 
 [include]
 files = <%= @node['supervisor']['dir'] %>/*.conf
