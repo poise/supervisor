@@ -19,3 +19,13 @@
 
 default['supervisor']['dir'] = '/etc/supervisor.d'
 default['supervisor']['log_dir'] = '/var/log/supervisor'
+
+# unix_http_server
+default['supervisor']['unix_http_server']['file'] = '/var/run/supervisor.sock'
+
+# inet_http_server
+default['supervisor']['inet_http_server']['enable'] = false
+default['supervisor']['inet_http_server']['port'] = '9001'
+default['supervisor']['inet_http_server']['host'] = '127.0.0.1'
+default['supervisor']['inet_http_server']['username'] = nil 
+default['supervisor']['inet_http_server']['password'] = nil
