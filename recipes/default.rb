@@ -35,6 +35,10 @@ template "/etc/supervisord.conf" do
   owner "root"
   group "root"
   mode "644"
+  variables({
+    :supervisord_minfds => node['supervisor']['minfds'],
+    :supervisord_minprocs => node['supervisor']['minprocs'],
+  })
 end
 
 directory node['supervisor']['log_dir'] do
