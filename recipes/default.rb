@@ -38,6 +38,7 @@ template "/etc/supervisord.conf" do
   variables({
     :supervisord_minfds => node['supervisor']['minfds'],
     :supervisord_minprocs => node['supervisor']['minprocs'],
+    :supervisor_version => node['supervisor']['version'],
   })
 end
 
