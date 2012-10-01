@@ -19,6 +19,10 @@ Attributes
 
 * `node['supervisor']['dir']` - location of supervisor config files
 * `node['supervisor']['log_dir']` - location of supervisor logs
+* `node['supervisor']['minfds']` - The minimum number of file descriptors
+  that must be available before supervisord will start successfully.
+* `node['supervisor']['minprocs']` - The minimum number of process descriptors
+  that must be available before supervisord will start successfully.
 
 Resources/Providers
 ===================
