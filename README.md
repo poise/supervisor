@@ -23,6 +23,8 @@ Attributes
   that must be available before supervisord will start successfully.
 * `node['supervisor']['minprocs']` - The minimum number of process descriptors
   that must be available before supervisord will start successfully.
+* `node['supervisor']['version']` - Sets the version of supervisor to
+  install, must be 3.0+ to use minprocs and minfds.
 
 Resources/Providers
 ===================
@@ -59,13 +61,13 @@ for more information about each setting, including applicable defaults.
 * `:autostart` - true or false
 * `:autorestart` - string, symbol, true or false
 * `:startsecs` - integer
-* `:startretries` - integer 
+* `:startretries` - integer
 * `:exitcodes` - array
 * `:stopsignal` - string or symbol
 * `:stopwaitsecs` - integer
 * `:user` - string or nil
 * `:redirect_stderr` - true or false
-* `:stdout_logfile` - string 
+* `:stdout_logfile` - string
 * `:stdout_logfile_maxbytes` - string
 * `:stdout_logfile_backups` - string
 * `:stdout_capture_maxbytes` - string
@@ -102,13 +104,11 @@ sets up supervisor.
 License and Author
 ==================
 
-Author:: Noah Kantrowitz <noah@opscode.com>
+- Author:: Noah Kantrowitz <noah@opscode.com>
+- Author:: Gilles Devaux <gilles.devaux@gmail.com>
 
-Author:: Gilles Devaux <gilles.devaux@gmail.com>
-
-Copyright:: 2011-2012, Opscode, Inc <legal@opscode.com>
-
-Copyright:: 2011, Formspring.me
+- Copyright:: 2011-2012, Opscode, Inc <legal@opscode.com>
+- Copyright:: 2011, Formspring.me
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
