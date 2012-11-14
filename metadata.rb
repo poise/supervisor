@@ -1,8 +1,9 @@
+name              "supervisor"
 maintainer        "Noah Kantrowitz"
 maintainer_email  "noah@opscode.com"
 license           "Apache 2.0"
 description       "Installs supervisor and provides resources to configure services"
-version           "0.2.0"
+version           "0.2.1"
 
 recipe "supervisor", "Installs and configures supervisord"
 
