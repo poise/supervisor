@@ -10,7 +10,7 @@ startretries=<%= @prog.startretries %>
 exitcodes=<%= @prog.exitcodes.join(',') %>
 stopsignal=<%= @prog.stopsignal %>
 stopwaitsecs=<%= @prog.stopwaitsecs %>
-<% if @prog.stopasgroup.nil? %>
+<% unless @prog.stopasgroup.nil? %>
 stopasgroup=<%= @prog.stopasgroup %>
 <% end %>
 <% if @prog.user %>
