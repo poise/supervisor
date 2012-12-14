@@ -38,6 +38,7 @@ attribute :startretries, :kind_of => Integer, :default => 3
 attribute :exitcodes, :kind_of => Array, :default => [0, 2]
 attribute :stopsignal, :kind_of => [String, Symbol], :default => :TERM
 attribute :stopwaitsecs, :kind_of => Integer, :default => 10
+attribute :stopasgroup, :kind_of => [TrueClass,FalseClass], :default => nil
 attribute :user, :kind_of => [String, NilClass], :default => nil
 attribute :redirect_stderr, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :stdout_logfile, :kind_of => String, :default => 'AUTO'
