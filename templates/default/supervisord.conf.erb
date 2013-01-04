@@ -9,6 +9,17 @@
 file=/var/run//supervisor.sock   ; (the path to the socket file)
 chmod=0700                       ; sockef file mode (default 0700)
 
+<% unless @inet_port.nil? %>
+[inet_http_server]
+port=<%= @inet_port %>
+<% unless @inet_username.nil? %>
+username=<%= @inet_username %>
+<% unless @inet_password.nil? %>
+password=<%= @inet_password %>
+<% end %>
+<% end %>
+<% end %>
+
 [supervisord]
 logfile=<%= @node['supervisor']['log_dir'] %>/supervisord.log ; (main log file;default $CWD/supervisord.log)
 pidfile=/var/run/supervisord.pid ; (supervisord pidfile;default supervisord.pid)

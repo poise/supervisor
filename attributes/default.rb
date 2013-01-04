@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+default['supervisor']['inet_port'] = nil
+default['supervisor']['inet_username'] = nil
+default['supervisor']['inet_password'] = nil
 default['supervisor']['dir'] = '/etc/supervisor.d'
 default['supervisor']['log_dir'] = '/var/log/supervisor'
 default['supervisor']['minfds'] = 1024
