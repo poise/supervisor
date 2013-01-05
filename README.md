@@ -25,6 +25,12 @@ Attributes
   this HTTP server (supports both cleartext and SHA-1 hashed passwords prefixed by `{SHA}`)
 * `node['supervisor']['dir']` - location of supervisor config files
 * `node['supervisor']['log_dir']` - location of supervisor logs
+* `node['supervisor']['logfile_maxbytes']` - max bytes for the supervisord
+  logfile before it is rotated rotated, default `'50MB'`
+* `node['supervisor']['logfile_backups']` - the number of backups of that
+  logfile to keep, default `10`
+* `node['supervisor']['loglevel']` - the minimum severity for those log
+  messages, default `'info'`
 * `node['supervisor']['minfds']` - The minimum number of file descriptors
   that must be available before supervisord will start successfully.
 * `node['supervisor']['minprocs']` - The minimum number of process descriptors
