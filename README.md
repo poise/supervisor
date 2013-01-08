@@ -17,8 +17,20 @@ Tested on Ubuntu 10.04
 Attributes
 ==========
 
+* `node['supervisor']['inet_port']` - The port on which you want to serve the
+  internal web-based admin dashboard, e.g. `'localhost:9001'`
+* `node['supervisor']['inet_username']` - The username for authentication to
+  this HTTP server
+* `node['supervisor']['inet_password']` - The password for authentication to
+  this HTTP server (supports both cleartext and SHA-1 hashed passwords prefixed by `{SHA}`)
 * `node['supervisor']['dir']` - location of supervisor config files
 * `node['supervisor']['log_dir']` - location of supervisor logs
+* `node['supervisor']['logfile_maxbytes']` - max bytes for the supervisord
+  logfile before it is rotated rotated, default `'50MB'`
+* `node['supervisor']['logfile_backups']` - the number of backups of that
+  logfile to keep, default `10`
+* `node['supervisor']['loglevel']` - the minimum severity for those log
+  messages, default `'info'`
 * `node['supervisor']['minfds']` - The minimum number of file descriptors
   that must be available before supervisord will start successfully.
 * `node['supervisor']['minprocs']` - The minimum number of process descriptors
