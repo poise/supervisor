@@ -30,8 +30,8 @@ childlogdir=<%= @node['supervisor']['log_dir'] %>               ; ('AUTO' child 
 
 <% if !@supervisor_version.nil? and @supervisor_version.match(/^3/) -%>
 ; minfds & minprocs first appeared in supervisord 3.0
-minfds = <%= @supervisord_minfds -%>
-minprocs = <%= @supervisord_minprocs -%>
+minfds = <%= @supervisord_minfds %>
+minprocs = <%= @supervisord_minprocs %>
 <% end -%>
 
 ; the below section must remain in the config file for RPC
