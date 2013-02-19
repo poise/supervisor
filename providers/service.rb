@@ -17,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+#modfied by tejay cardon on 19feb2013 (Lockheed Martin)
 
 action :enable do
   execute "supervisorctl update" do
@@ -24,7 +25,7 @@ action :enable do
     user "root"
   end
 
-  template "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
+  template "#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension}" do
     source "program.conf.erb"
     cookbook "supervisor"
     owner "root"

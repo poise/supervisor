@@ -16,14 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+#Modifed by Tejay Cardon Lockheed Martin 19feb2013
 
 default['supervisor']['inet_port'] = nil
 default['supervisor']['inet_username'] = nil
 default['supervisor']['inet_password'] = nil
-default['supervisor']['dir'] = '/etc/supervisor.d'
+default['supervisor']['dir'] = '/etc/supervisord.d'
 default['supervisor']['log_dir'] = '/var/log/supervisor'
 default['supervisor']['logfile_maxbytes'] = '50MB'
 default['supervisor']['logfile_backups'] = 10
 default['supervisor']['loglevel'] = 'info'
 default['supervisor']['minfds'] = 1024
 default['supervisor']['minprocs'] = 200
+default[:supervisor][:conf][:extension] = "ini"
