@@ -25,7 +25,7 @@ action :enable do
     user "root"
   end
 
-  template "#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension}" do
+  template "#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}" do
     source "program.conf.erb"
     cookbook "supervisor"
     owner "root"
