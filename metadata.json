@@ -10,7 +10,6 @@
     "debian": ">= 0.0.0"
   },
   "dependencies": {
-    "python": ">= 0.0.0"
   },
   "recommendations": {
   },
