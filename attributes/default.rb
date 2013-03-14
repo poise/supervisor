@@ -20,7 +20,14 @@
 default['supervisor']['inet_port'] = nil
 default['supervisor']['inet_username'] = nil
 default['supervisor']['inet_password'] = nil
-default['supervisor']['dir'] = '/etc/supervisor.d'
+case node['platform_family']
+when "smartos"
+  default['supervisor']['dir'] = '/opt/local/etc/supervisor.d'
+  default['supervisor']['conffile'] = '/opt/local/etc/supervisord.conf'
+else
+  default['supervisor']['dir'] = '/etc/supervisor.d'
+  default['supervisor']['conffile'] = '/etc/supervisord.conf'
+end
 default['supervisor']['log_dir'] = '/var/log/supervisor'
 default['supervisor']['logfile_maxbytes'] = '50MB'
 default['supervisor']['logfile_backups'] = 10
