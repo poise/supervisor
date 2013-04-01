@@ -19,7 +19,8 @@
 
 include_recipe "python"
 
-if node['platform_family'] == "smartos"
+# foodcritic FC023: we prefer not having the resource on non-smartos
+if platform_family?("smartos")
   package "py27-expat" do
     action :install
   end
@@ -91,7 +92,7 @@ when "smartos"
     mode "644"
     notifies :run, "execute[svccfg-import-supervisord]", :immediately
   end
-  
+
   execute "svccfg-import-supervisord" do
     command "svccfg import /opt/local/share/smf/supervisord/manifest.xml"
     action :nothing
