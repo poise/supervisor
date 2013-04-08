@@ -19,6 +19,13 @@
 
 include_recipe "python"
 
+# foodcritic FC023: we prefer not having the resource on non-smartos
+if platform_family?("smartos")
+  package "py27-expat" do
+    action :install
+  end
+end
+
 python_pip "supervisor" do
   action :install
   version node['supervisor']['version'] if node['supervisor']['version']
@@ -30,7 +37,7 @@ directory node['supervisor']['dir'] do
   mode "755"
 end
 
-template "/etc/supervisord.conf" do
+template node['supervisor']['conffile'] do
   source "supervisord.conf.erb"
   owner "root"
   group "root"
@@ -70,5 +77,28 @@ when "debian", "ubuntu"
 
   service "supervisor" do
     action [:enable, :start]
+  end
+when "smartos"
+  directory "/opt/local/share/smf/supervisord" do
+    owner "root"
+    group "root"
+    mode "755"
+  end
+
+  template "/opt/local/share/smf/supervisord/manifest.xml" do
+    source "manifest.xml.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :run, "execute[svccfg-import-supervisord]", :immediately
+  end
+
+  execute "svccfg-import-supervisord" do
+    command "svccfg import /opt/local/share/smf/supervisord/manifest.xml"
+    action :nothing
+  end
+
+  service "supervisord" do
+    action [:enable]
   end
 end
