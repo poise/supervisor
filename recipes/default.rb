@@ -2,7 +2,7 @@
 # Cookbook Name:: supervisor
 # Recipe:: default
 #
-# Copyright 2011, Opscode, Inc.
+# Copyright 2011-2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,8 @@
 
 include_recipe "python"
 
-# foodcritic FC023: we prefer not having the resource on non-smartos
-if platform_family?("smartos")
-  package "py27-expat" do
-    action :install
-  end
+package 'py27-expat' do
+  only_if { platform_family?('smartos') }
 end
 
 python_pip "supervisor" do

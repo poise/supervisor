@@ -31,8 +31,10 @@ action :enable do
     group "root"
     mode "644"
     variables :prog => new_resource
-    notifies :run, resources(:execute => "supervisorctl update"), :immediately
+    notifies :run, 'execute[supervisorctl update]', :immediately
   end
+
+  new_resource.updated_by_last_action(true)
 end
 
 action :disable do
@@ -43,30 +45,40 @@ action :disable do
 
   file "#{node['supervisor']['dir']}/#{new_resource.program_name}.conf" do
     action :delete
-    notifies :run, resources(:execute => "supervisorctl update"), :immediately
+    notifies :run, 'execute[supervisorctl update]', :immediately
   end
+
+  new_resource.updated_by_last_action(true)
 end
 
 action :start do
   execute "supervisorctl start #{new_resource.program_name}" do
     user "root"
   end
+
+  new_resource.updated_by_last_action(true)
 end
 
 action :stop do
   execute "supervisorctl stop #{new_resource.program_name}" do
     user "root"
   end
+
+  new_resource.updated_by_last_action(true)
 end
 
 action :restart  do
   execute "supervisorctl restart #{new_resource.program_name}" do
     user "root"
   end
+
+  new_resource.updated_by_last_action(true)
 end
 
 action :reload  do
   execute "supervisorctl restart #{new_resource.program_name}" do
     user "root"
   end
+
+  new_resource.updated_by_last_action(true)
 end
