@@ -1,3 +1,10 @@
+## v0.4.2:
+
+### Bug
+
+- [COOK-2601]: support supervisor on SmartOS
+- [COOK-2980]: supervisor cookbook has foodcritic errors
+
 ## v0.4.0:
 
 * [COOK-2157] - add `inet_http_server` and logfile config settings
