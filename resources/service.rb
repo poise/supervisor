@@ -18,12 +18,8 @@
 # limitations under the License.
 #
 
-actions :enable, :disable, :start, :stop, :restart, :reload
-
-def initialize(*args)
-  super
-  @action = [:enable, :start]
-end
+actions :enable, :disable, :start, :stop, :restart
+default_action :enable
 
 attribute :service_name, :kind_of => String, :name_attribute => true
 attribute :command, :kind_of => String
@@ -39,6 +35,7 @@ attribute :exitcodes, :kind_of => Array, :default => [0, 2]
 attribute :stopsignal, :kind_of => [String, Symbol], :default => :TERM
 attribute :stopwaitsecs, :kind_of => Integer, :default => 10
 attribute :stopasgroup, :kind_of => [TrueClass,FalseClass], :default => nil
+attribute :killasgroup, :kind_of => [TrueClass,FalseClass], :default => nil
 attribute :user, :kind_of => [String, NilClass], :default => nil
 attribute :redirect_stderr, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :stdout_logfile, :kind_of => String, :default => 'AUTO'
@@ -55,3 +52,5 @@ attribute :environment, :kind_of => Hash, :default => {}
 attribute :directory, :kind_of => [String, NilClass], :default => nil
 attribute :umask, :kind_of => [NilClass, String], :default => nil
 attribute :serverurl, :kind_of => String, :default => 'AUTO'
+
+attr_accessor :state
