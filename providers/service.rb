@@ -39,7 +39,7 @@ action :start do
   when 'UNAVAILABLE'
     raise "Supervisor service #{new_resource.name} cannot be started because it does not exist"
   when 'RUNNING'
-    Chef::Log.info "#{ new_resource } is already started."
+    Chef::Log.debug "#{ new_resource } is already started."
   else
     converge_by("Starting #{ new_resource }") do
       result = supervisorctl('start')
@@ -55,7 +55,7 @@ action :stop do
   when 'UNAVAILABLE'
     raise "Supervisor service #{new_resource.name} cannot be stopped because it does not exist"
   when 'STOPPED'
-    Chef::Log.info "#{ new_resource } is already stopped."
+    Chef::Log.debug "#{ new_resource } is already stopped."
   else
     converge_by("Stopping #{ new_resource }") do
       result = supervisorctl('stop')
@@ -73,7 +73,7 @@ action :restart do
   else
     converge_by("Restarting #{ new_resource }") do
       result = supervisorctl('restart')
-      if !result.match(/#{new_resource.name}: started$/)
+      if !result.match(/^#{new_resource.name}: started$/)
         raise "Supervisor service #{new_resource.name} was unable to be started: #{result}"
       end
     end
