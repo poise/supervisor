@@ -1,3 +1,9 @@
+## v0.4.3:
+
+### Bug:
+
+- [COOK-3284]: supervisor cookbook upgrades distribute to 0.7.3, breaks pip
+
 ## v0.4.2:
 
 ### Bug
