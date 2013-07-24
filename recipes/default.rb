@@ -32,7 +32,7 @@ python_pip "setuptools" do
 end
 
 python_pip "supervisor" do
-  action :upgrade
+  action :install
   version node['supervisor']['version'] if node['supervisor']['version']
 end
 
