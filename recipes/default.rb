@@ -33,6 +33,7 @@ end
 
 python_pip "supervisor" do
   action :upgrade
+  options "--pre" if node['supervisor']['pre']
   version node['supervisor']['version'] if node['supervisor']['version']
 end
 
