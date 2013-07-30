@@ -37,6 +37,8 @@ Attributes
   that must be available before supervisord will start successfully.
 * `node['supervisor']['version']` - Sets the version of supervisor to
   install, must be 3.0+ to use minprocs and minfds.
+* `node['supervisor']['pre']` - Tells the pip install to install the prerelease
+  version of the supervisor package. (Default `false`)
 
 Resources/Providers
 ===================
