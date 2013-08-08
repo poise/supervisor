@@ -91,7 +91,7 @@ force_stop() {
 case "$1" in
   start)
     echo -n "Starting $DESC: "
-    start-stop-daemon --start --quiet --pidfile $PIDFILE \
+    start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE \
                       --startas $DAEMON -- $DAEMON_OPTS
     test -f $PIDFILE || sleep 1
         if running ; then
