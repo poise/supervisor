@@ -7,7 +7,7 @@ version           "0.4.5"
 
 recipe "supervisor", "Installs and configures supervisord"
 
-depends "python"
+depends "python", ">= 1.3.6"
 
 %w{ ubuntu debian }.each do |os|
   supports os
