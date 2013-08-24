@@ -3,6 +3,7 @@ command=<%= @prog.command %>
 process_name=<%= @prog.process_name %>
 numprocs=<%= @prog.numprocs %>
 numprocs_start=<%= @prog.numprocs_start %>
+priority=<%= @prog.priority %>
 autostart=<%= @prog.autostart ? 'true' : 'false' %>
 autorestart=<%= @prog.autorestart.is_a?(String) ? @prog.autorestart : ( @prog.autorestart ? 'true' : 'false' ) %>
 startsecs=<%= @prog.startsecs %>
