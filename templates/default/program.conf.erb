@@ -28,7 +28,7 @@ stderr_logfile_backups=<%= @prog.stderr_logfile_backups %>
 stderr_capture_maxbytes=<%= @prog.stderr_capture_maxbytes %>
 stderr_events_enabled=<%= @prog.stderr_events_enabled ? 'true' : 'false' %>
 <% unless @prog.environment.empty? %>
-environment=<%= @prog.environment.map{|k,v| "#{k}=\"#{v}\""}.join(',') %>
+environment=<%= @prog.environment.sort.map{|k,v| "#{k}=\"#{v}\""}.join(',') %>
 <% end %>
 <% if @prog.directory %>
 directory=<%= @prog.directory %>

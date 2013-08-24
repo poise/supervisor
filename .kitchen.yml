@@ -33,4 +33,3 @@ suites:
   run_list:
   - recipe[supervisor]
   attributes: {}
-
