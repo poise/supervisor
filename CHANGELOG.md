@@ -3,6 +3,13 @@ supervisor Cookbook CHANGELOG
 This file is used to list changes made in each version of the supervisor cookbook.
 
 
+v0.4.6
+------
+### Bug
+- **[COOK-3312](https://tickets.opscode.com/browse/COOK-3312)** - Sort environment variables
+- **[COOK-3098](https://tickets.opscode.com/browse/COOK-3098)** - Fix supervisor notifications
+- **[COOK-3037](https://tickets.opscode.com/browse/COOK-3037)** - Add missing priority option in template
+
 v0.4.4
 ------
 ### Bug:
