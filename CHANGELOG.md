@@ -3,6 +3,11 @@ supervisor Cookbook CHANGELOG
 This file is used to list changes made in each version of the supervisor cookbook.
 
 
+v0.4.8
+------
+### Bug
+- **[COOK-3448](https://tickets.opscode.com/browse/COOK-3448)** - Remove duplicate `:restart` provider
+
 v0.4.6
 ------
 ### Bug
