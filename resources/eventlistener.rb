@@ -23,5 +23,5 @@ default_action :enable
 
 attribute :eventlistener_name, :kind_of => String, :name_attribute => true
 attribute :command, :kind_of => String
-attribute :events, :kind_of => Array, :default => []
+attribute :supervisor_events, :kind_of => Array, :default => []
 

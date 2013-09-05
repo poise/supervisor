@@ -36,7 +36,7 @@ def enable_service
     user "root"
   end
 
-  template "#{node['supervisor']['dir']}/eventlistener_#{new_resource.service_name}.conf" do
+  template "#{node['supervisor']['dir']}/eventlistener_#{new_resource.eventlistener_name}.conf" do
     source "eventlistener.conf.erb"
     cookbook "supervisor"
     owner "root"
@@ -53,7 +53,7 @@ def disable_service
     user "root"
   end
 
-  file "#{node['supervisor']['dir']}/eventlistener_#{new_resource.service_name}.conf" do
+  file "#{node['supervisor']['dir']}/eventlistener_#{new_resource.eventlistener_name}.conf" do
     action :delete
     notifies :run, "execute[supervisorctl update]", :immediately
   end
