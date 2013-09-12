@@ -19,6 +19,68 @@
 #
 
 action :enable do
+  converge_by("Enabling #{ new_resource }") do
+    enable_service
+  end
+end
+
+action :disable do
+  if current_resource.state == 'UNAVAILABLE'
+    Chef::Log.info "#{new_resource} is already disabled."
+  else
+    converge_by("Disabling #{new_resource}") do
+      disable_service
+    end
+  end
+end
+
+action :start do
+  case current_resource.state
+  when 'UNAVAILABLE'
+    raise "Supervisor service #{new_resource.name} cannot be started because it does not exist"
+  when 'RUNNING'
+    Chef::Log.debug "#{ new_resource } is already started."
+  else
+    converge_by("Starting #{ new_resource }") do
+      result = supervisorctl('start')
+      if !result.match(/#{new_resource.name}: started$/)
+        raise "Supervisor service #{new_resource.name} was unable to be started: #{result}"
+      end
+    end
+  end
+end
+
+action :stop do
+  case current_resource.state
+  when 'UNAVAILABLE'
+    raise "Supervisor service #{new_resource.name} cannot be stopped because it does not exist"
+  when 'STOPPED'
+    Chef::Log.debug "#{ new_resource } is already stopped."
+  else
+    converge_by("Stopping #{ new_resource }") do
+      result = supervisorctl('stop')
+      if !result.match(/#{new_resource.name}: stopped$/)
+        raise "Supervisor service #{new_resource.name} was unable to be stopped: #{result}"
+      end
+    end
+  end
+end
+
+action :restart do
+  case current_resource.state
+  when 'UNAVAILABLE'
+    raise "Supervisor service #{new_resource.name} cannot be restarted because it does not exist"
+  else
+    converge_by("Restarting #{ new_resource }") do
+      result = supervisorctl('restart')
+      if !result.match(/^#{new_resource.name}: started$/)
+        raise "Supervisor service #{new_resource.name} was unable to be started: #{result}"
+      end
+    end
+  end
+end
+
+def enable_service
   execute "supervisorctl update" do
     action :nothing
     user "root"
@@ -31,11 +93,11 @@ action :enable do
     group "root"
     mode "644"
     variables :prog => new_resource
-    notifies :run, resources(:execute => "supervisorctl update"), :immediately
+    notifies :run, "execute[supervisorctl update]", :immediately
   end
 end
 
-action :disable do
+def disable_service
   execute "supervisorctl update" do
     action :nothing
     user "root"
@@ -43,32 +105,14 @@ action :disable do
 
   file "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
     action :delete
-    notifies :run, resources(:execute => "supervisorctl update"), :immediately
+    notifies :run, "execute[supervisorctl update]", :immediately
   end
 end
 
-action :start do
-  execute "supervisorctl start #{cmd_line_args}" do
-    user "root"
-  end
-end
-
-action :stop do
-  execute "supervisorctl stop #{cmd_line_args}" do
-    user "root"
-  end
-end
-
-action :restart  do
-  execute "supervisorctl restart #{cmd_line_args}" do
-    user "root"
-  end
-end
-
-action :reload  do
-  execute "supervisorctl restart #{cmd_line_args}" do
-    user "root"
-  end
+def supervisorctl(action)
+  cmd = "supervisorctl #{action} #{cmd_line_args}"
+  result = Mixlib::ShellOut.new(cmd).run_command
+  result.stdout.rstrip
 end
 
 def cmd_line_args
@@ -77,4 +121,18 @@ def cmd_line_args
     name += ':*'
   end
   name
+end
+
+def get_current_state(service_name)
+  result = Mixlib::ShellOut.new("supervisorctl status #{service_name}").run_command
+  if result.stdout.include? "No such process #{service_name}"
+    "UNAVAILABLE"
+  else
+    result.stdout.match("(^#{service_name}\\s*)([A-Z]+)(.+)")[2]
+  end
+end
+
+def load_current_resource
+  @current_resource = Chef::Resource::SupervisorService.new(@new_resource.name)
+  @current_resource.state = get_current_state(@new_resource.name)
 end
