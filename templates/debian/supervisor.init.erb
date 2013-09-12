@@ -102,7 +102,7 @@ case "$1" in
     ;;
   stop)
     echo -n "Stopping $DESC: "
-    start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE 
+    start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
     echo "$NAME."
     ;;
   force-stop)

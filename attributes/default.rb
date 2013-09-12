@@ -21,7 +21,10 @@
 default['supervisor']['inet_port'] = nil
 default['supervisor']['inet_username'] = nil
 default['supervisor']['inet_password'] = nil
+
 default['supervisor']['dir'] = '/etc/supervisord.d'
+default['supervisor']['conffile'] = '/etc/supervisord.conf'
+
 default['supervisor']['log_dir'] = '/var/log/supervisor'
 default['supervisor']['logfile_maxbytes'] = '50MB'
 default['supervisor']['logfile_backups'] = 10
