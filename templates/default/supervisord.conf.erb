@@ -13,9 +13,9 @@ chmod=0700                       ; sockef file mode (default 0700)
 [inet_http_server]
 port=<%= @inet_port -%>
 <%   unless @inet_username.nil? -%>
-username=<%= @inet_username -%>
+username=<%= @inet_username %>
 <%     unless @inet_password.nil? -%>
-password=<%= @inet_password -%>
+password=<%= @inet_password %>
 <%     end -%>
 <%   end -%>
 <% end -%>
