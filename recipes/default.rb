@@ -26,9 +26,13 @@ if platform_family?("smartos")
   end
 end
 
-# Until pip 1.4 drops, see https://github.com/pypa/pip/issues/1033
-python_pip "setuptools" do
-  action :upgrade
+
+python_pip_version = `pip --version | cut -d ' ' -f2`.to_f
+if python_pip_version < 1.4
+  # Until pip 1.4 drops, see https://github.com/pypa/pip/issues/1033
+  python_pip "setuptools" do
+    action :upgrade
+  end
 end
 
 python_pip "supervisor" do
