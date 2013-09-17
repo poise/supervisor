@@ -36,7 +36,7 @@ if python_pip_version < 1.4
 end
 
 python_pip "supervisor" do
-  action :upgrade
+  action :install
   version node['supervisor']['version'] if node['supervisor']['version']
 end
 
