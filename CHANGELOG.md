@@ -2,6 +2,10 @@ supervisor Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the supervisor cookbook.
 
+v100.5.2
+--------
+### Bug
+- fixes start and stop while starting or stopping
 
 v0.4.8
 ------
