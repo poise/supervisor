@@ -90,7 +90,7 @@ def enable_service
     user "root"
   end
 
-  template "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
+  t = template "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
     source "program.conf.erb"
     cookbook "supervisor"
     owner "root"
@@ -99,6 +99,7 @@ def enable_service
     variables :prog => new_resource
     notifies :run, "execute[supervisorctl update]", :immediately
   end
+  t.run_action(:create)
 end
 
 def disable_service
