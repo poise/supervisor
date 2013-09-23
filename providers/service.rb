@@ -99,7 +99,11 @@ def enable_service
     variables :prog => new_resource
     notifies :run, "execute[supervisorctl update]", :immediately
   end
+  
   t.run_action(:create)
+  if t.updated?
+    e.run_action(:run)
+  end
 end
 
 def disable_service
