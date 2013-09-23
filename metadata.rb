@@ -4,7 +4,7 @@ maintainer        "Noah Kantrowitz"
 maintainer_email  "noah@opscode.com"
 license           "Apache 2.0"
 description       "Installs supervisor and provides resources to configure services"
-version           "100.5.2"  #tracks to github version 0.4.6
+version           "100.6.0"  #tracks to github version 0.4.6
 
 recipe "supervisor", "Installs and configures supervisord"
 
