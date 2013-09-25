@@ -54,4 +54,10 @@ attribute :umask, :kind_of => [NilClass, String], :default => nil
 attribute :serverurl, :kind_of => String, :default => 'AUTO'
 
 attr_accessor :state
-attr_accessor :isEnabled
+attr_accessor :enabled
+alias_method "enabled?", :enabled
+
+def initialize(*args)
+  super
+  @enabled = @autostart
+end

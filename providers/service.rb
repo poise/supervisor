@@ -20,7 +20,7 @@
 #modified by tejay cardon on 19feb2013 (Lockheed Martin)
 
 action :enable do
-  if current_resource.isEnabled
+  if current_resource.enabled?
     Chef::Log.info "#{new_resource} is already enabled."
   else
     converge_by("Enabling #{ new_resource }") do
@@ -30,7 +30,7 @@ action :enable do
 end
 
 action :disable do
-  if current_resource.isEnabled
+  if current_resource.enabled?
     converge_by("Disabling #{new_resource}") do
       disable_service
     end
@@ -46,14 +46,14 @@ action :add do
 end
 
 action :remove do
-  if File.exists?("#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}")
+  if ::File.exists?("#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}")
     converge_by("Removing #{new_resource}") do
       execute "supervisorctl update" do
         action :nothing
         user "root"
       end
 
-      file "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
+      file "#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}" do
         action :delete
         notifies :run, "execute[supervisorctl update]", :immediately
       end
@@ -85,6 +85,12 @@ action :stop do
     Chef::Log.debug "#{ new_resource } is already stopped."
   when 'STOPPING'
     Chef::Log.debug "#{ new_resource } is already stopping."
+  when 'BACKOFF'
+    Chef::Log.debug "#{ new_resource } is in the BACKOFF state, doesn't need stopping."
+  when 'EXITED'
+    Chef::Log.debug "#{ new_resource } is in the EXITED state.  Does not need stopping."
+  when 'FATAL'
+    Chef::Log.debug "#{ new_resource } is in the FATAL state.  Does not need stopping."
   else
     converge_by("Stopping #{ new_resource }") do
       result = supervisorctl('stop')
@@ -106,12 +112,12 @@ action :restart do
 end
 
 def enable_service
-  new_resource.autostart = true
+  new_resource.enabled = true
   create_config_file
 end
 
 def disable_service
-  new_resource.autostart = false
+  new_resource.enabled = false
   create_config_file
 end
 
@@ -174,5 +180,5 @@ end
 def load_current_resource
   @current_resource = Chef::Resource::SupervisorService.new(@new_resource.name)
   @current_resource.state = get_current_state(@new_resource.name)
-  @current_resource.isEnabled = isEnabled(@new_resource.name)
+  @current_resource.enabled = isEnabled(@new_resource.name)
 end
