@@ -31,5 +31,6 @@ platforms:
 suites:
 - name: default
   run_list:
-  - recipe[supervisor]
+  - recipe[minitest-handler]
+  - recipe[supervisor_test]
   attributes: {}
