@@ -6,8 +6,8 @@
 
 [unix_http_server]
 file=/var/run//supervisor.sock   ; (the path to the socket file)
-chmod=0700                       ; sockef file mode (default 0700)
 <% unless @inet_port.nil? %>
+chmod=0766                       ; socket file mode (default 0700)
 
 [inet_http_server]
 port=<%= @inet_port %>

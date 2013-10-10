@@ -34,3 +34,13 @@ default['supervisor']['logfile_backups'] = 10
 default['supervisor']['loglevel'] = 'info'
 default['supervisor']['minfds'] = 1024
 default['supervisor']['minprocs'] = 200
+
+# Only use custom init script settings when on RHEL
+case node['platform_family']
+when "rhel"
+    default["supervisor"]["supervisorctl_location"] = '/usr/local/bin/supervisorctl'
+    default["supervisor"]["supervisord_location"] = '/usr/local/bin/supervisord'
+else
+    default["supervisor"]["supervisorctl_location"] = 'supervisorctl'
+    default["supervisor"]["supervisord_location"] = 'supervisord'
+end
