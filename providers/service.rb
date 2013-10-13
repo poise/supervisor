@@ -124,11 +124,18 @@ def cmd_line_args
 end
 
 def get_current_state(service_name)
-  result = Mixlib::ShellOut.new("supervisorctl status #{service_name}").run_command
-  if result.stdout.include? "No such process #{service_name}"
+  cmd = "supervisorctl status #{service_name}"
+  result = Mixlib::ShellOut.new(cmd).run_command
+  stdout = result.stdout
+  if stdout.include? "No such process #{service_name}"
     "UNAVAILABLE"
   else
-    result.stdout.match("(^#{service_name}\\s*)([A-Z]+)(.+)")[2]
+    match = stdout.match("(^#{service_name}\\s*)([A-Z]+)(.+)")
+    if match.nil?
+      raise "The supervisor service is not running as expected. " \
+              "The command '#{cmd}' output:\n----\n#{stdout}\n----"
+    end
+    match[2]
   end
 end
 
