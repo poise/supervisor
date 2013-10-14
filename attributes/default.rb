@@ -36,3 +36,4 @@ default['supervisor']['logfile_backups'] = 10
 default['supervisor']['loglevel'] = 'info'
 default['supervisor']['minfds'] = 1024
 default['supervisor']['minprocs'] = 200
+default['supervisor']['socket_file'] = '/var/run/supervisor.sock'
