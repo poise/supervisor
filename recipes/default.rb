@@ -50,6 +50,7 @@ template node['supervisor']['conffile'] do
     :supervisord_minfds => node['supervisor']['minfds'],
     :supervisord_minprocs => node['supervisor']['minprocs'],
     :supervisor_version => node['supervisor']['version'],
+    :socket_file => node['supervisor']['socket_file'],
   })
 end
 

@@ -25,6 +25,7 @@ Attributes
 - `node['supervisor']['minfds']` - The minimum number of file descriptors that must be available before supervisord will start successfully.
 - `node['supervisor']['minprocs']` - The minimum number of process descriptors that must be available before supervisord will start successfully.
 - `node['supervisor']['version']` - Sets the version of supervisor to install, must be 3.0+ to use minprocs and minfds.
+- `node['supervisor']['socket_file']` - location of supervisor socket file.
 
 
 Resources/Providers
