@@ -81,7 +81,7 @@ action :restart do
 end
 
 def enable_service
-  execute "supervisorctl update" do
+  execute "#{new_resource.supervisorctl} update" do
     action :nothing
     user "root"
   end
@@ -93,24 +93,24 @@ def enable_service
     group "root"
     mode "644"
     variables :prog => new_resource
-    notifies :run, "execute[supervisorctl update]", :immediately
+    notifies :run, "execute[#{new_resource.supervisorctl} update]", :immediately
   end
 end
 
 def disable_service
-  execute "supervisorctl update" do
+  execute "#{new_resource.supervisorctl} update" do
     action :nothing
     user "root"
   end
 
   file "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
     action :delete
-    notifies :run, "execute[supervisorctl update]", :immediately
+    notifies :run, "execute[#{new_resource.supervisorctl} update]", :immediately
   end
 end
 
 def supervisorctl(action)
-  cmd = "supervisorctl #{action} #{cmd_line_args}"
+  cmd = "#{new_resource.supervisorctl} #{action} #{cmd_line_args}"
   result = Mixlib::ShellOut.new(cmd).run_command
   result.stdout.rstrip
 end
@@ -124,9 +124,11 @@ def cmd_line_args
 end
 
 def get_current_state(service_name)
-  result = Mixlib::ShellOut.new("supervisorctl status #{service_name}").run_command
+  result = Mixlib::ShellOut.new("#{new_resource.supervisorctl} status #{service_name}").run_command
   if result.stdout.include? "No such process #{service_name}"
     "UNAVAILABLE"
+  elsif result.stdout.include? "unix:///var/run/supervisor.sock no such file"
+    "service is down"
   else
     result.stdout.match("(^#{service_name}\\s*)([A-Z]+)(.+)")[2]
   end

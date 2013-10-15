@@ -106,4 +106,16 @@ when "smartos"
   service "supervisord" do
     action [:enable]
   end
+when "redhat"
+  template "/etc/init.d/supervisord" do
+    source "supervisord.init.erb"
+    owner "root"
+    group "root"
+    mode "755"
+  end
+
+  service "supervisord" do
+    supports :status => true, :restart => true, :reload => true
+    action [:enable, :start]
+  end
 end
