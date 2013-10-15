@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+default['supervisor']['support_required'] = true
 default['supervisor']['inet_port'] = nil
 default['supervisor']['inet_username'] = nil
 default['supervisor']['inet_password'] = nil
