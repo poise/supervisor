@@ -106,7 +106,7 @@ when "smartos"
   service "supervisord" do
     action [:enable]
   end
-when "redhat"
+when "redhat", "centos", "amazon"
   template "/etc/init.d/supervisord" do
     source "supervisord.init.erb"
     owner "root"
