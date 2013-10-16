@@ -26,6 +26,8 @@
 # should be incorporated:
 # https://github.com/Supervisor/initscripts/blob/master/redhat-init-mingalevme
 
+echo "running supervisord init script: $1"
+
 # source function library
 . /etc/rc.d/init.d/functions
 
@@ -42,7 +44,8 @@ WAIT_FOR_SUBPROCESSES=yes
 # remove this if you manage number of open files in some other fashion
 ulimit -n 96000
 
-RETVAL=0
+# Default to a bad exit code as a precaution.
+RETVAL=1
 
 start() {
     echo "Starting supervisord: "
