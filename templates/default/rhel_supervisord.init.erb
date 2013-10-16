@@ -47,6 +47,24 @@ ulimit -n 96000
 # Default to a bad exit code as a precaution.
 RETVAL=1
 
+# For debugging purposes.
+show_status() {
+    cmd="$SUPERVISORCTL status"
+    echo "showing: $cmd"
+    stdout=`$cmd`
+    echo "output: $stdout"
+}
+
+# Return 0 if and only if supervisord is running.
+running() {
+    # TODO: consider adding the more careful logic in one of the other
+    # templates (e.g. ubuntu).
+    if [ -e $PIDFILE ]; then
+        return 0
+    fi
+    return 1
+}
+
 start() {
     echo "Starting supervisord: "
     if [ -e $PIDFILE ]; then
@@ -116,8 +134,18 @@ case "$1" in
         RETVAL=$?
         ;;
     status)
-        $SUPERVISORCTL status
-        RETVAL=$?
+        # For a service[supervisord] Chef resource using this script to
+        # "support" the status action, calling this script with the status
+        # command must exit with status 0 if and only if the service is running.
+        show_status
+        echo -n "supervisord (based on $PIDFILE) is: "
+        if running ;  then
+            echo "running"
+            RETVAL=0
+        else
+            echo "not running"
+            RETVAL=1
+        fi
         ;;
     *)
         echo $"Usage: $0 {start|stop|status|restart|reload|force-reload|condrestart}"
