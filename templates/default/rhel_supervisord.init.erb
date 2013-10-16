@@ -6,9 +6,9 @@
 #               Jason Koppe <jkoppe@indeed.com> adjusted to read sysconfig,
 #                   use supervisord tools to start/stop, conditionally wait
 #                   for child processes to shutdown, and startup later
-#
-#               Adapted from https://github.com/Supervisor/initscripts/blob/73ef8a0482d90d550e802565f83896ca460e8afe/redhat-init-mingalevme
-#               small amount of changes have been made from original script.
+#               Additional changes were made by others after being
+#               incorporated into the Opscode supervisor cookbook as
+#               an erb template.
 #
 # chkconfig:    345 83 04
 #
@@ -18,6 +18,13 @@
 # config: /etc/supervisord.conf
 # pidfile: /var/run/supervisord.pid
 #
+
+# This template was adapted from:
+# https://github.com/Supervisor/initscripts/blob/master/redhat-init-jkoppe
+# (commit 64f85465c6aaeb37b2385f3331004cf0a7d2182f)
+# TODO: take a look at the following for any additional changes that
+# should be incorporated:
+# https://github.com/Supervisor/initscripts/blob/master/redhat-init-mingalevme
 
 # source function library
 . /etc/rc.d/init.d/functions
