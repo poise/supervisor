@@ -83,6 +83,17 @@ when "debian", "ubuntu"
   service "supervisor" do
     action [:enable, :start]
   end
+when "centos"
+  template "/etc/rc.d/init.d/supervisor" do
+    source "supervisor.init.erb"
+    owner "root"
+    group "root"
+    mode "755"
+  end
+
+  service "supervisor" do
+    action [:enable, :start]
+  end
 when "smartos"
   directory "/opt/local/share/smf/supervisord" do
     owner "root"
