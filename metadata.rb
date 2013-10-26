@@ -9,6 +9,6 @@ recipe "supervisor", "Installs and configures supervisord"
 
 depends "python"
 
-%w{ ubuntu debian rhel }.each do |os|
+%w{ amazon centos debian redhat ubuntu }.each do |os|
   supports os
 end
