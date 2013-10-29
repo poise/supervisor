@@ -68,7 +68,7 @@ start() {
     echo "Starting supervisord: "
     if [ -e $PIDFILE ]; then
         echo "ALREADY STARTED"
-        return 1
+        return 0
     fi
 
     $SUPERVISORD $OPTIONS
