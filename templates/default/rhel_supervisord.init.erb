@@ -1,0 +1,155 @@
+#!/bin/bash
+#
+# supervisord   This scripts turns supervisord on
+#
+# Author:       Mike McGrath <mmcgrath@redhat.com> (based off yumupdatesd)
+#               Jason Koppe <jkoppe@indeed.com> adjusted to read sysconfig,
+#                   use supervisord tools to start/stop, conditionally wait
+#                   for child processes to shutdown, and startup later
+#               Additional changes were made by others after being
+#               incorporated into the Opscode supervisor cookbook as
+#               an erb template.
+#
+# chkconfig:    345 83 04
+#
+# description:  supervisor is a process control utility.  It has a web based
+#               xmlrpc interface as well as a few other nifty features.
+# processname:  supervisord
+# config: /etc/supervisord.conf
+# pidfile: /var/run/supervisord.pid
+#
+
+# This template was adapted from:
+# https://github.com/Supervisor/initscripts/blob/master/redhat-init-jkoppe
+# (commit 64f85465c6aaeb37b2385f3331004cf0a7d2182f)
+# TODO: take a look at the following for any additional changes that
+# should be incorporated:
+# https://github.com/Supervisor/initscripts/blob/master/redhat-init-mingalevme
+
+echo "running supervisord init script: $1"
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+SUPERVISORCTL=<%= @node['supervisor']['supervisorctl_location'] %>
+SUPERVISORD=<%= @node['supervisor']['supervisord_location'] %>
+
+# should probably put both of these options as runtime arguments
+OPTIONS="-c /etc/supervisord.conf"
+PIDFILE=/var/run/supervisord.pid
+
+# unset this variable if you don't care to wait for child processes to shutdown before removing the /var/lock/subsys/supervisord lock
+WAIT_FOR_SUBPROCESSES=yes
+
+# remove this if you manage number of open files in some other fashion
+ulimit -n 96000
+
+# Default to a bad exit code as a precaution.
+RETVAL=1
+
+# For debugging purposes.
+show_status() {
+    cmd="$SUPERVISORCTL $OPTIONS status"
+    echo "showing: $cmd"
+    $cmd
+}
+
+# Return 0 if and only if supervisord is running.
+running() {
+    # TODO: consider adding the more careful logic in one of the other
+    # templates (e.g. ubuntu).
+    if [ -e $PIDFILE ]; then
+        return 0
+    fi
+    return 1
+}
+
+start() {
+    echo "Starting supervisord: "
+    if [ -e $PIDFILE ]; then
+        echo "ALREADY STARTED"
+        return 0
+    fi
+
+    $SUPERVISORD $OPTIONS
+
+    # show initial startup status
+    show_status
+
+    # only create the subsyslock if we created the PIDFILE
+    [ -e $PIDFILE ] && touch /var/lock/subsys/supervisord
+}
+
+stop() {
+    echo -n "Stopping supervisord: "
+    $SUPERVISORCTL $OPTIONS shutdown
+    if [ -n "$WAIT_FOR_SUBPROCESSES" ]; then
+        echo "Waiting roughly 60 seconds for $PIDFILE to be removed after child processes exit"
+        total_sleep=0
+        for sleep in  2 2 2 2 4 4 4 4 8 8 8 8 last; do
+            if [ ! -e $PIDFILE ] ; then
+                echo "Supervisord exited as expected after waiting $total_sleep seconds"
+                break
+            else
+                if [[ $sleep -eq "last" ]] ; then
+                    echo "Supervisord still working on shutting down. We've waited roughly 60 seconds, we'll let it do its thing from here"
+                    return 1
+                else
+                    sleep $sleep
+                    total_sleep=$(( $total_sleep + $sleep ))
+                fi
+
+            fi
+        done
+    fi
+
+    # always remove the subsys.  we might have waited a while, but just remove it at this point.
+    rm -f /var/lock/subsys/supervisord
+}
+
+restart() {
+        stop
+        start
+}
+
+case "$1" in
+    start)
+        start
+        RETVAL=$?
+        ;;
+    stop)
+        stop
+        RETVAL=$?
+        ;;
+    restart|force-reload)
+        restart
+        RETVAL=$?
+        ;;
+    reload)
+        $SUPERVISORCTL $OPTIONS reload
+        RETVAL=$?
+        ;;
+    condrestart)
+        [ -f /var/lock/subsys/supervisord ] && restart
+        RETVAL=$?
+        ;;
+    status)
+        # For a service[supervisord] Chef resource using this script to
+        # "support" the status action, calling this script with the status
+        # command must exit with status 0 if and only if the service is running.
+        show_status
+        echo -n "supervisord (based on $PIDFILE) is: "
+        if running ;  then
+            echo "running"
+            RETVAL=0
+        else
+            echo "not running"
+            RETVAL=1
+        fi
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|reload|force-reload|condrestart}"
+        exit 1
+esac
+
+exit $RETVAL

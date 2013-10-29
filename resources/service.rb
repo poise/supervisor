@@ -52,5 +52,6 @@ attribute :environment, :kind_of => Hash, :default => {}
 attribute :directory, :kind_of => [String, NilClass], :default => nil
 attribute :umask, :kind_of => [NilClass, String], :default => nil
 attribute :serverurl, :kind_of => String, :default => 'AUTO'
+attribute :supervisorctl, :kind_of => String, :default => 'supervisorctl'
 
 attr_accessor :state
