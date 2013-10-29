@@ -49,10 +49,9 @@ RETVAL=1
 
 # For debugging purposes.
 show_status() {
-    cmd="$SUPERVISORCTL status"
+    cmd="$SUPERVISORCTL $OPTIONS status"
     echo "showing: $cmd"
-    stdout=`$cmd`
-    echo "output: $stdout"
+    $cmd
 }
 
 # Return 0 if and only if supervisord is running.
@@ -75,7 +74,7 @@ start() {
     $SUPERVISORD $OPTIONS
 
     # show initial startup status
-    $SUPERVISORCTL $OPTIONS status
+    show_status
 
     # only create the subsyslock if we created the PIDFILE
     [ -e $PIDFILE ] && touch /var/lock/subsys/supervisord
