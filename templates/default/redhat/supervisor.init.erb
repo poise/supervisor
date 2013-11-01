@@ -14,7 +14,7 @@ source /etc/rc.d/init.d/functions
 
 start() {
     echo -n "Starting supervisor: "
-    daemon "supervisord -c <%= node['supervisor']['conffile'] %>" || return $?
+    daemon "<%= @supervisord %> -c <%= node['supervisor']['conffile'] %>" || return $?
     echo
     touch /var/lock/subsys/supervisor
 }

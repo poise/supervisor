@@ -89,6 +89,9 @@ when "redhat", "centos", "fedora"
     owner "root"
     group "root"
     mode "755"
+    variables({
+      :supervisord => "#{node['python']['prefix_dir']}/bin/supervisord"
+    })
   end
 
   service "supervisor" do
