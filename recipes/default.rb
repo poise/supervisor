@@ -67,14 +67,14 @@ end
 case node['platform']
 when "debian", "ubuntu"
   template "/etc/init.d/supervisor" do
-    source "supervisor.init.erb"
+    source "debian/supervisor.init.erb"
     owner "root"
     group "root"
     mode "755"
   end
 
   template "/etc/default/supervisor" do
-    source "supervisor.default.erb"
+    source "debian/supervisor.default.erb"
     owner "root"
     group "root"
     mode "644"
@@ -83,9 +83,9 @@ when "debian", "ubuntu"
   service "supervisor" do
     action [:enable, :start]
   end
-when "centos"
+when "redhat", "centos", "fedora"
   template "/etc/rc.d/init.d/supervisor" do
-    source "supervisor.init.erb"
+    source "redhat/supervisor.init.erb"
     owner "root"
     group "root"
     mode "755"
