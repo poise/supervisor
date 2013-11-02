@@ -67,7 +67,7 @@ end
 case node['platform']
 when "centos", "debian", "fedora", "redhat", "ubuntu"
   template "/etc/init.d/supervisor" do
-    source platform_family?("debian") ? "debian/supervisor.init.erb" : "redhat/supervisor.init.erb"
+    source platform_family?("debian") ? "debian/supervisor.init.erb" : "rhel/supervisor.init.erb"
     owner "root"
     group "root"
     mode "755"
