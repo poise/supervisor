@@ -65,33 +65,24 @@ directory node['supervisor']['log_dir'] do
 end
 
 case node['platform']
-when "debian", "ubuntu"
+when "centos", "debian", "fedora", "redhat", "ubuntu"
   template "/etc/init.d/supervisor" do
-    source "debian/supervisor.init.erb"
-    owner "root"
-    group "root"
-    mode "755"
-  end
-
-  template "/etc/default/supervisor" do
-    source "debian/supervisor.default.erb"
-    owner "root"
-    group "root"
-    mode "644"
-  end
-
-  service "supervisor" do
-    action [:enable, :start]
-  end
-when "redhat", "centos", "fedora"
-  template "/etc/rc.d/init.d/supervisor" do
-    source "redhat/supervisor.init.erb"
+    source platform_family?("debian") ? "debian/supervisor.init.erb" : "redhat/supervisor.init.erb"
     owner "root"
     group "root"
     mode "755"
     variables({
       :supervisord => "#{node['python']['prefix_dir']}/bin/supervisord"
     })
+  end
+
+  if platform_family?("debian")
+    template "/etc/default/supervisor" do
+      source "debian/supervisor.default.erb"
+      owner "root"
+      group "root"
+      mode "644"
+    end
   end
 
   service "supervisor" do
