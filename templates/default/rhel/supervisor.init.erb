@@ -14,15 +14,19 @@ source /etc/rc.d/init.d/functions
 
 start() {
     echo -n "Starting supervisor: "
-    daemon "<%= @supervisord %> -c <%= node['supervisor']['conffile'] %>" || return $?
+    daemon "<%= @supervisord %> -c <%= node['supervisor']['conffile'] %>"
+    RETVAL=$?
     echo
+    [ $RETVAL -ne 0 ] && return $RETVAL
     touch /var/lock/subsys/supervisor
 }
 
 stop() {
     echo -n "Shutting down supervisor: "
-    killproc supervisord || return $?
+    killproc supervisord
+    RETVAL=$?
     echo
+    [ $RETVAL -ne 0 ] && return $RETVAL
     rm -f /var/lock/subsys/supervisor
 }
 
