@@ -24,6 +24,8 @@ start() {
 
 stop() {
     echo -n "Shutting down supervisor: "
+    status supervisord > /dev/null
+    [ $? -eq 3 ] && echo "already stopped" && return 0
     killproc supervisord
     RETVAL=$?
     echo
