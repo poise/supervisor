@@ -64,25 +64,31 @@ directory node['supervisor']['log_dir'] do
   recursive true
 end
 
+template "/etc/default/supervisor" do
+  source "debian/supervisor.default.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  only_if { platform_family?("debian") }
+end
+
+init_template_dir = value_for_platform_family(
+  ["rhel", "fedora"] => "rhel",
+  "debian" => "debian"
+)
+
 case node['platform']
 when "centos", "debian", "fedora", "redhat", "ubuntu"
   template "/etc/init.d/supervisor" do
-    source platform_family?("debian") ? "debian/supervisor.init.erb" : "rhel/supervisor.init.erb"
+    source "#{init_template_dir}/supervisor.init.erb"
     owner "root"
     group "root"
     mode "755"
     variables({
+      # TODO: use this variable in the debian platform-family template
+      # instead of altering the PATH and calling "which supervisord".
       :supervisord => "#{node['python']['prefix_dir']}/bin/supervisord"
     })
-  end
-
-  if platform_family?("debian")
-    template "/etc/default/supervisor" do
-      source "debian/supervisor.default.erb"
-      owner "root"
-      group "root"
-      mode "644"
-    end
   end
 
   service "supervisor" do
