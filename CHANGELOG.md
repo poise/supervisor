@@ -3,6 +3,12 @@ supervisor Cookbook CHANGELOG
 This file is used to list changes made in each version of the supervisor cookbook.
 
 
+v0.4.10
+-------
+### Bug
+- **[COOK-3784](https://tickets.opscode.com/browse/COOK-3784)** - Only remove newlines when absolutely necessary
+
+
 v0.4.8
 ------
 ### Bug
