@@ -17,6 +17,20 @@
 # limitations under the License.
 #
 
+supported_platforms = %w(debian smartos ubuntu)
+
+if !supported_platforms.include? node['platform']
+  if !node['supervisor']['support_required']
+    Chef::Log.info "Skipping supervisor recipe: platform #{node['platform']} " \
+                     "not supported and support_required set to false"
+    return
+  end
+  Chef::Application.fatal! "The supervisor recipe does not support platform " \
+    "#{node['platform']}. You can skip this recipe by setting " \
+    "node['supervisor']['support_required'] to false or use one of: " \
+    "#{supported_platforms.join(", ")}"
+end
+
 include_recipe "python"
 
 # foodcritic FC023: we prefer not having the resource on non-smartos
@@ -64,8 +78,7 @@ directory node['supervisor']['log_dir'] do
   recursive true
 end
 
-case node['platform']
-when "debian", "ubuntu"
+if node['platform'] != "smartos"
   template "/etc/init.d/supervisor" do
     source "supervisor.init.erb"
     owner "root"
@@ -83,7 +96,7 @@ when "debian", "ubuntu"
   service "supervisor" do
     action [:enable, :start]
   end
-when "smartos"
+else
   directory "/opt/local/share/smf/supervisord" do
     owner "root"
     group "root"
