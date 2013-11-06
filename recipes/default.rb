@@ -81,7 +81,7 @@ when "debian", "ubuntu"
   end
 
   service "supervisor" do
-    action [:enable, :start]
+    action node['supervisor']['initial_service_actions']
   end
 when "smartos"
   directory "/opt/local/share/smf/supervisord" do
