@@ -29,11 +29,13 @@ end
 # Until pip 1.4 drops, see https://github.com/pypa/pip/issues/1033
 python_pip "setuptools" do
   action :upgrade
+  virtualenv node['supervisor']['install']['virtualenv'] if node['supervisor']['install']['virtualenv']
 end
 
 python_pip "supervisor" do
   action :upgrade
   version node['supervisor']['version'] if node['supervisor']['version']
+  virtualenv node['supervisor']['install']['virtualenv'] if node['supervisor']['install']['virtualenv']
 end
 
 directory node['supervisor']['dir'] do

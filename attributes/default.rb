@@ -20,6 +20,8 @@
 default['supervisor']['inet_port'] = nil
 default['supervisor']['inet_username'] = nil
 default['supervisor']['inet_password'] = nil
+default['supervisor']['install']['virtualenv'] = nil
+
 case node['platform_family']
 when "smartos"
   default['supervisor']['dir'] = '/opt/local/etc/supervisor.d'
