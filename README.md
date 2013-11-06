@@ -25,6 +25,9 @@ Attributes
 - `node['supervisor']['minfds']` - The minimum number of file descriptors that must be available before supervisord will start successfully.
 - `node['supervisor']['minprocs']` - The minimum number of process descriptors that must be available before supervisord will start successfully.
 - `node['supervisor']['version']` - Sets the version of supervisor to install, must be 3.0+ to use minprocs and minfds.
+- `node['supervisor']['install']['admin_user']` - Existing user that owns the configuration files and directories.
+- `node['supervisor']['install']['admin_group']` - Existing group that owns the configuration files and directories.
+- `node['supervisor']['install']['daemon_user']` - Existing user that the supervisor daemon will run as.
 - `node['supervisor']['install']['virtualenv']` - Install supervisor into this virtualenv that must be available before installation.  Leave this set to `nil` or anything *falsy* to install supervisor globally.
 
 

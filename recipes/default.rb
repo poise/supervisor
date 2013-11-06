@@ -29,25 +29,27 @@ end
 # Until pip 1.4 drops, see https://github.com/pypa/pip/issues/1033
 python_pip "setuptools" do
   action :upgrade
+  user node['supervisor']['install']['daemon_user']
   virtualenv node['supervisor']['install']['virtualenv'] if node['supervisor']['install']['virtualenv']
 end
 
 python_pip "supervisor" do
   action :upgrade
+  user node['supervisor']['install']['daemon_user']
   version node['supervisor']['version'] if node['supervisor']['version']
   virtualenv node['supervisor']['install']['virtualenv'] if node['supervisor']['install']['virtualenv']
 end
 
 directory node['supervisor']['dir'] do
-  owner "root"
-  group "root"
+  owner node['supervisor']['install']['admin_user']
+  group node['supervisor']['install']['admin_group']
   mode "755"
 end
 
 template node['supervisor']['conffile'] do
   source "supervisord.conf.erb"
-  owner "root"
-  group "root"
+  owner node['supervisor']['install']['admin_user']
+  group node['supervisor']['install']['admin_group']
   mode "644"
   variables({
     :inet_port => node['supervisor']['inet_port'],
@@ -60,8 +62,8 @@ template node['supervisor']['conffile'] do
 end
 
 directory node['supervisor']['log_dir'] do
-  owner "root"
-  group "root"
+  owner node['supervisor']['install']['daemon_user']
+  group node['supervisor']['install']['admin_group']
   mode "755"
   recursive true
 end
@@ -70,15 +72,15 @@ case node['platform']
 when "debian", "ubuntu"
   template "/etc/init.d/supervisor" do
     source "supervisor.init.erb"
-    owner "root"
-    group "root"
+    owner node['supervisor']['install']['admin_user']
+    group node['supervisor']['install']['admin_group']
     mode "755"
   end
 
   template "/etc/default/supervisor" do
     source "supervisor.default.erb"
-    owner "root"
-    group "root"
+    owner node['supervisor']['install']['admin_user']
+    group node['supervisor']['install']['admin_group']
     mode "644"
   end
 
@@ -87,15 +89,15 @@ when "debian", "ubuntu"
   end
 when "smartos"
   directory "/opt/local/share/smf/supervisord" do
-    owner "root"
-    group "root"
+    owner node['supervisor']['install']['admin_user']
+    group node['supervisor']['install']['admin_group']
     mode "755"
   end
 
   template "/opt/local/share/smf/supervisord/manifest.xml" do
     source "manifest.xml.erb"
-    owner "root"
-    group "root"
+    owner node['supervisor']['install']['admin_user']
+    group node['supervisor']['install']['admin_group']
     mode "644"
     notifies :run, "execute[svccfg-import-supervisord]", :immediately
   end

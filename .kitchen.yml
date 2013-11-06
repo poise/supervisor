@@ -24,3 +24,6 @@ suites:
       supervisor:
         install:
           virtualenv: /opt/supervisor
+          daemon_user: supervisor
+          admin_user: root
+          admin_group: superadm
