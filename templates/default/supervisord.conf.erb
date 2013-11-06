@@ -5,8 +5,9 @@
 ;
 
 [unix_http_server]
-file=/var/run//supervisor.sock   ; (the path to the socket file)
-chmod=0700                       ; sockef file mode (default 0700)
+file=/var/run//supervisor.sock                                ; (the path to the socket file)
+chmod=<%= @node['supervisor']['unix_http_server']['chmod'] %> ; socket file mode (default 0700)
+chown=<%= @node['supervisor']['unix_http_server']['chown'] %> ; socket file uid:gid owner
 <% unless @inet_port.nil? %>
 
 [inet_http_server]
