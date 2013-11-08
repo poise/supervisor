@@ -14,6 +14,7 @@ source /etc/rc.d/init.d/functions
 
 start() {
     echo -n "Starting supervisor: "
+    # status() returns 0 if and only if the service is properly started.
     status supervisord > /dev/null && echo "already running" && return 0
     daemon "<%= @supervisord %> -c <%= node['supervisor']['conffile'] %>"
     RETVAL=$?
@@ -26,6 +27,7 @@ start() {
 stop() {
     echo -n "Shutting down supervisor: "
     status supervisord > /dev/null
+    # status() returns 3 if and only if the service is properly stopped.
     [ $? -eq 3 ] && echo "already stopped" && return 0
     killproc supervisord
     RETVAL=$?
