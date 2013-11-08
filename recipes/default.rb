@@ -78,7 +78,7 @@ init_template_dir = value_for_platform_family(
 )
 
 case node['platform']
-when "centos", "debian", "fedora", "redhat", "ubuntu"
+when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu"
   template "/etc/init.d/supervisor" do
     source "#{init_template_dir}/supervisor.init.erb"
     owner "root"
