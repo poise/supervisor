@@ -99,6 +99,7 @@ License & Authors
 - Author:: Noah Kantrowitz <noah@opscode.com>
 - Author:: Gilles Devaux <gilles.devaux@gmail.com>
 - Author:: Sam Clements <sam.clements@datasift.com>
+- Author:: Chris Jerdonek <chris.jerdonek@gmail.com>
 
 ```text
 Copyright:: 2011-2012, Opscode, Inc <legal@opscode.com>
