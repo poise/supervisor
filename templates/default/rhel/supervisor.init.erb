@@ -45,14 +45,14 @@ case "$1" in
     ;;
     status)
         status supervisord
-        exit $?
     ;;
     restart)
-        stop
+        # Exit with an error if the shutdown was not successful.
+        stop || exit 1
         start
     ;;
     *)
         echo "Usage: <servicename> {start|stop|status|restart}"
-        exit 1
+        exit 3
     ;;
 esac
