@@ -17,7 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#modified by tejay cardon on 19feb2013 (Lockheed Martin)
 
 action :enable do
   if current_resource.enabled?
@@ -25,7 +24,6 @@ action :enable do
   else
     converge_by("Enabling #{ new_resource }") do
       enable_service
-    end
   end
 end
 
@@ -158,11 +156,18 @@ def create_config_file
 end
 
 def get_current_state(service_name)
-  result = Mixlib::ShellOut.new("supervisorctl status #{service_name}").run_command
-  if result.stdout.include? "No such process #{service_name}"
+  cmd = "supervisorctl status #{service_name}"
+  result = Mixlib::ShellOut.new(cmd).run_command
+  stdout = result.stdout
+  if stdout.include? "No such process #{service_name}"
     "UNAVAILABLE"
   else
-    result.stdout.match("(^#{service_name}\\s*)([A-Z]+)(.+)")[2]
+    match = stdout.match("(^#{service_name}\\s*)([A-Z]+)(.+)")
+    if match.nil?
+      raise "The supervisor service is not running as expected. " \
+              "The command '#{cmd}' output:\n----\n#{stdout}\n----"
+    end
+    match[2]
   end
 end
 
