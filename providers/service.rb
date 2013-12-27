@@ -85,7 +85,7 @@ action :restart do
 end
 
 def enable_service
-  execute "supervisorctl update" do
+  e = execute "supervisorctl update" do
     action :nothing
     user "root"
   end
