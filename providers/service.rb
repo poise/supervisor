@@ -40,6 +40,8 @@ action :start do
     raise "Supervisor service #{new_resource.name} cannot be started because it does not exist"
   when 'RUNNING'
     Chef::Log.debug "#{ new_resource } is already started."
+  when 'STARTING'
+    Chef::Log.debug "#{ new_resource } is already starting."
   else
     converge_by("Starting #{ new_resource }") do
       result = supervisorctl('start')
@@ -56,6 +58,8 @@ action :stop do
     raise "Supervisor service #{new_resource.name} cannot be stopped because it does not exist"
   when 'STOPPED'
     Chef::Log.debug "#{ new_resource } is already stopped."
+  when 'STOPPING'
+    Chef::Log.debug "#{ new_resource } is already stopping."
   else
     converge_by("Stopping #{ new_resource }") do
       result = supervisorctl('stop')
@@ -81,12 +85,12 @@ action :restart do
 end
 
 def enable_service
-  execute "supervisorctl update" do
+  e = execute "supervisorctl update" do
     action :nothing
     user "root"
   end
 
-  template "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
+  t = template "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
     source "program.conf.erb"
     cookbook "supervisor"
     owner "root"
@@ -94,6 +98,11 @@ def enable_service
     mode "644"
     variables :prog => new_resource
     notifies :run, "execute[supervisorctl update]", :immediately
+  end
+  
+  t.run_action(:create)
+  if t.updated?
+    e.run_action(:run)
   end
 end
 
