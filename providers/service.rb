@@ -158,16 +158,26 @@ end
 def wait_til_state(state)
   max_tries = 20
   service = new_resource.service_name
-  
-  for i in 0..max_tries
-    break if get_current_state(service) == state
-    
+
+  max_tries.times do
+    return if get_current_state(service) == state
+
     Chef::Log.debug("Waiting for service #{service} to be in state #{state}")
     sleep 1
   end
+  
+  raise "service #{service} not in state #{state} after #{max_tries} tries"
+  
 
-  if i == max_tries
-    raise "service #{service} not in state #{state} after #{max_tries} tries"
-  end
+  # for i in 0..max_tries
+  #   break if get_current_state(service) == state
+    
+  #   Chef::Log.debug("Waiting for service #{service} to be in state #{state}")
+  #   sleep 1
+  # end
+
+  # if i == max_tries
+  #   raise "service #{service} not in state #{state} after #{max_tries} tries"
+  # end
 
 end
