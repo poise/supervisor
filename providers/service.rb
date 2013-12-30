@@ -42,6 +42,7 @@ action :start do
     Chef::Log.debug "#{ new_resource } is already started."
   when 'STARTING'
     Chef::Log.debug "#{ new_resource } is already starting."
+    wait_til_state("RUNNING")
   else
     converge_by("Starting #{ new_resource }") do
       result = supervisorctl('start')
@@ -60,6 +61,7 @@ action :stop do
     Chef::Log.debug "#{ new_resource } is already stopped."
   when 'STOPPING'
     Chef::Log.debug "#{ new_resource } is already stopping."
+    wait_til_state("STOPPED")
   else
     converge_by("Stopping #{ new_resource }") do
       result = supervisorctl('stop')
@@ -151,4 +153,18 @@ end
 def load_current_resource
   @current_resource = Chef::Resource::SupervisorService.new(@new_resource.name)
   @current_resource.state = get_current_state(@new_resource.name)
+end
+
+def wait_til_state(state,max_tries=20)
+  service = new_resource.service_name
+
+  max_tries.times do
+    return if get_current_state(service) == state
+
+    Chef::Log.debug("Waiting for service #{service} to be in state #{state}")
+    sleep 1
+  end
+  
+  raise "service #{service} not in state #{state} after #{max_tries} tries"
+
 end
