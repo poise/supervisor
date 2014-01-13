@@ -16,3 +16,14 @@ suites:
   - name: default
     run_list:
       - recipe[supervisor::default]
+  - name: chroot
+    run_list:
+      - recipe[daemonuser::create-fixtures]
+      - recipe[supervisor::default]
+    attributes:
+      supervisor:
+        install:
+          virtualenv: /opt/supervisor
+          daemon_user: supervisor
+          admin_user: root
+          admin_group: superadm

@@ -22,7 +22,7 @@
 ### END INIT INFO
 
 
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:<%= node['supervisor']['install']['virtualenv'] %>/bin
 DAEMON="$(which supervisord)"
 NAME=supervisord
 DESC=supervisor
