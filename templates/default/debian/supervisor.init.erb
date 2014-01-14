@@ -21,7 +21,7 @@
 #                    subprocesses.
 ### END INIT INFO
 
-
+<%# TODO: use the @supervisord template variable instead of calling which. %>
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON="$(which supervisord)"
 NAME=supervisord
