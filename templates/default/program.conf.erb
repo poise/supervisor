@@ -38,9 +38,9 @@ directory=<%= @prog.directory %>
 umask=<%= @prog.umask %>
 <% end %>
 serverurl=<%= @prog.serverurl %>
-<% unless @prog.events.nil? or @prog.events.empty? %>
-events=<%= @prog.events.join(',') %>
+<% unless @prog.eventlistener_events.nil? or @prog.eventlistener_events.empty? %>
+events=<%= @prog.eventlistener_events.join(',') %>
 <% end %>
-<% unless @prog.buffer_size.nil? %>
-buffer_size=<%= @prog.buffer_size %>
+<% unless @prog.eventlistener_buffer_size.nil? %>
+buffer_size=<%= @prog.eventlistener_buffer_size %>
 <% end %>
