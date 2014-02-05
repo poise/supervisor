@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-actions :enable, :disable, :start, :stop, :restart
+actions :enable, :disable, :start, :stop, :restart, :add, :remove
 default_action :enable
 
 attribute :service_name, :kind_of => String, :name_attribute => true
@@ -54,3 +54,10 @@ attribute :umask, :kind_of => [NilClass, String], :default => nil
 attribute :serverurl, :kind_of => String, :default => 'AUTO'
 
 attr_accessor :state
+attr_accessor :enabled
+alias_method "enabled?", :enabled
+
+def initialize(*args)
+  super
+  @enabled = @autostart
+end

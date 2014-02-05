@@ -19,30 +19,55 @@
 #
 
 action :enable do
-  converge_by("Enabling #{ new_resource }") do
-    enable_service
+  if current_resource.enabled?
+    Chef::Log.info "#{new_resource} is already enabled."
+  else
+    converge_by("Enabling #{ new_resource }") do
+      enable_service
+    end
   end
 end
 
 action :disable do
-  if current_resource.state == 'UNAVAILABLE'
-    Chef::Log.info "#{new_resource} is already disabled."
-  else
+  if current_resource.enabled?
     converge_by("Disabling #{new_resource}") do
       disable_service
+    end
+  else
+    Chef::Log.info "#{new_resource} is already disabled."
+  end
+end
+
+action :add do
+  converge_by("Creating #{new_resource}") unless ::File.exists?("#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}") do
+    create_config_file
+  end
+end
+
+action :remove do
+  if ::File.exists?("#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}")
+    converge_by("Removing #{new_resource}") do
+      execute "supervisorctl update" do
+        action :nothing
+        user "root"
+      end
+
+      file "#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}" do
+        action :delete
+        notifies :run, "execute[supervisorctl update]", :immediately
+      end
     end
   end
 end
 
 action :start do
+  create_config_file
   case current_resource.state
-  when 'UNAVAILABLE'
-    raise "Supervisor service #{new_resource.name} cannot be started because it does not exist"
   when 'RUNNING'
     Chef::Log.debug "#{ new_resource } is already started."
   when 'STARTING'
     Chef::Log.debug "#{ new_resource } is already starting."
-    wait_til_state("RUNNING")
+    wait_til_state('RUNNING')
   else
     converge_by("Starting #{ new_resource }") do
       result = supervisorctl('start')
@@ -54,14 +79,19 @@ action :start do
 end
 
 action :stop do
+  create_config_file
   case current_resource.state
-  when 'UNAVAILABLE'
-    raise "Supervisor service #{new_resource.name} cannot be stopped because it does not exist"
   when 'STOPPED'
     Chef::Log.debug "#{ new_resource } is already stopped."
   when 'STOPPING'
     Chef::Log.debug "#{ new_resource } is already stopping."
-    wait_til_state("STOPPED")
+    wait_til_state('STOPPED')
+  when 'BACKOFF'
+    Chef::Log.debug "#{ new_resource } is in the BACKOFF state, doesn't need stopping."
+  when 'EXITED'
+    Chef::Log.debug "#{ new_resource } is in the EXITED state.  Does not need stopping."
+  when 'FATAL'
+    Chef::Log.debug "#{ new_resource } is in the FATAL state.  Does not need stopping."
   else
     converge_by("Stopping #{ new_resource }") do
       result = supervisorctl('stop')
@@ -73,51 +103,23 @@ action :stop do
 end
 
 action :restart do
-  case current_resource.state
-  when 'UNAVAILABLE'
-    raise "Supervisor service #{new_resource.name} cannot be restarted because it does not exist"
-  else
+  create_config_file
     converge_by("Restarting #{ new_resource }") do
-      result = supervisorctl('restart')
-      if !result.match(/^#{new_resource.name}: started$/)
-        raise "Supervisor service #{new_resource.name} was unable to be started: #{result}"
-      end
+    result = supervisorctl('restart')
+    if !result.match(/^#{new_resource.name}: started$/)
+      raise "Supervisor service #{new_resource.name} was unable to be started: #{result}"
     end
   end
 end
 
 def enable_service
-  e = execute "supervisorctl update" do
-    action :nothing
-    user "root"
-  end
-
-  t = template "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
-    source "program.conf.erb"
-    cookbook "supervisor"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :prog => new_resource
-    notifies :run, "execute[supervisorctl update]", :immediately
-  end
-  
-  t.run_action(:create)
-  if t.updated?
-    e.run_action(:run)
-  end
+  new_resource.enabled = true
+  create_config_file
 end
 
 def disable_service
-  execute "supervisorctl update" do
-    action :nothing
-    user "root"
-  end
-
-  file "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
-    action :delete
-    notifies :run, "execute[supervisorctl update]", :immediately
-  end
+  new_resource.enabled = false
+  create_config_file
 end
 
 def supervisorctl(action)
@@ -132,6 +134,28 @@ def cmd_line_args
     name += ':*'
   end
   name
+end
+
+def create_config_file  
+  t = template "#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}" do
+    action :create
+    source "program.conf.erb"
+    cookbook "supervisor"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :prog => new_resource
+  end
+  
+  e = execute "supervisorctl update" do
+    action :nothing
+    user "root"
+  end
+  
+  t.run_action(:create)
+  if t.updated?
+    e.run_action(:run)
+  end
 end
 
 def get_current_state(service_name)
@@ -150,9 +174,21 @@ def get_current_state(service_name)
   end
 end
 
+def isEnabled(serviceName)
+  configFile = "#{node['supervisor']['dir']}/#{new_resource.service_name}.#{node[:supervisor][:conf][:extension]}"
+  exists = ::File.exists?(configFile)
+  enabled = exists
+  if exists
+    result = Mixlib::ShellOut.new("grep autostart #{configFile}").run_command
+    enabled = false unless result.stdout.match(/\w*autostart.*false/).nil?
+  end
+  enabled
+end
+
 def load_current_resource
   @current_resource = Chef::Resource::SupervisorService.new(@new_resource.name)
   @current_resource.state = get_current_state(@new_resource.name)
+  @current_resource.enabled = isEnabled(@new_resource.name)
 end
 
 def wait_til_state(state,max_tries=20)
