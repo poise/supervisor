@@ -46,7 +46,7 @@ action :start do
   else
     converge_by("Starting #{ new_resource }") do
       if not supervisorctl('start')
-        raise "Supervisor service #{new_resource.name} was unable to be started: #{result}"
+        raise "Supervisor service #{new_resource.name} was unable to be started"
       end
     end
   end
@@ -64,7 +64,7 @@ action :stop do
   else
     converge_by("Stopping #{ new_resource }") do
       if not supervisorctl('stop')
-        raise "Supervisor service #{new_resource.name} was unable to be stopped: #{result}"
+        raise "Supervisor service #{new_resource.name} was unable to be stopped"
       end
     end
   end
@@ -77,7 +77,7 @@ action :restart do
   else
     converge_by("Restarting #{ new_resource }") do
       if not supervisorctl('restart')
-        raise "Supervisor service #{new_resource.name} was unable to be started: #{result}"
+        raise "Supervisor service #{new_resource.name} was unable to be started"
       end
     end
   end
@@ -128,24 +128,18 @@ end
 
 def cmd_line_args
   name = new_resource.service_name
-  if new_resource.numprocs_start >= 1 and new_resource.numprocs >= 1
+  if new_resource.process_name != '%(program_name)s'
     name += ':*'
   end
   name
 end
 
 def get_current_state(service_name)
-  cmd = "supervisorctl status #{service_name}"
-  result = Mixlib::ShellOut.new(cmd).run_command
-  stdout = result.stdout
-  if stdout.include? "No such process #{service_name}"
+  result = Mixlib::ShellOut.new("supervisorctl status").run_command
+  match = result.stdout.match("(^#{service_name}(\\:\\S+)?\\s*)([A-Z]+)(.+)")
+  if match.nil?
     "UNAVAILABLE"
   else
-    match = stdout.match("(^#{service_name}(\\:\\S+)?\\s*)([A-Z]+)(.+)")
-    if match.nil?
-      raise "The supervisor service is not running as expected. " \
-              "The command '#{cmd}' output:\n----\n#{stdout}\n----"
-    end
     match[3]
   end
 end
