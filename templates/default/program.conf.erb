@@ -1,4 +1,4 @@
-[program:<%= @prog.service_name %>]
+[<%= @prog.eventlistener ? 'eventlistener' : 'program' %>:<%= @prog.service_name %>]
 command=<%= @prog.command %>
 process_name=<%= @prog.process_name %>
 numprocs=<%= @prog.numprocs %>
@@ -38,3 +38,9 @@ directory=<%= @prog.directory %>
 umask=<%= @prog.umask %>
 <% end %>
 serverurl=<%= @prog.serverurl %>
+<% unless @prog.eventlistener_events.nil? or @prog.eventlistener_events.empty? %>
+events=<%= @prog.eventlistener_events.join(',') %>
+<% end %>
+<% unless @prog.eventlistener_buffer_size.nil? %>
+buffer_size=<%= @prog.eventlistener_buffer_size %>
+<% end %>
