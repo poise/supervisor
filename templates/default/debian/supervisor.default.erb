@@ -7,4 +7,4 @@
 #
 
 # Additional options that are passed to the Daemon.
-DAEMON_OPTS="<%= @node['supervisor']['daemon_options'] %>"
+DAEMON_OPTS="-c <%= node['supervisor']['conffile'] %> <%= @node['supervisor']['daemon_options'] %>"
