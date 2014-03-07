@@ -1,7 +1,7 @@
 #
 # Author:: Noah Kantrowitz <noah@opscode.com>
 # Cookbook Name:: supervisor
-# Provider:: service
+# Provider:: section
 #
 # Copyright:: 2011, Opscode, Inc <legal@opscode.com>
 #
@@ -89,8 +89,8 @@ def enable_service
     user "root"
   end
 
-  t = template "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
-    source "program.conf.erb"
+  t = template "#{node['supervisor']['dir']}/#{new_resource.section_name}.conf" do
+    source "section.conf.erb"
     cookbook "supervisor"
     owner "root"
     group "root"
@@ -111,7 +111,7 @@ def disable_service
     user "root"
   end
 
-  file "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
+  file "#{node['supervisor']['dir']}/#{new_resource.section_name}.conf" do
     action :delete
     notifies :run, "execute[supervisorctl update]", :immediately
   end
@@ -127,16 +127,16 @@ def supervisorctl(action)
 end
 
 def cmd_line_args
-  name = new_resource.service_name
-  if new_resource.process_name != '%(program_name)s'
+  name = new_resource.section_name
+  if new_resource.process_name != '%(section_name)s'
     name += ':*'
   end
   name
 end
 
-def get_current_state(service_name)
+def get_current_state(section_name)
   result = Mixlib::ShellOut.new("supervisorctl status").run_command
-  match = result.stdout.match("(^#{service_name}(\\:\\S+)?\\s*)([A-Z]+)(.+)")
+  match = result.stdout.match("(^#{section_name}(\\:\\S+)?\\s*)([A-Z]+)(.+)")
   if match.nil?
     "UNAVAILABLE"
   else
@@ -145,12 +145,12 @@ def get_current_state(service_name)
 end
 
 def load_current_resource
-  @current_resource = Chef::Resource::SupervisorService.new(@new_resource.name)
+  @current_resource = @new_resource.class.new(@new_resource.name)
   @current_resource.state = get_current_state(@new_resource.name)
 end
 
 def wait_til_state(state,max_tries=20)
-  service = new_resource.service_name
+  service = new_resource.section_name
 
   max_tries.times do
     return if get_current_state(service) == state

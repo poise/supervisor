@@ -1,6 +1,6 @@
 supervisor Cookbook
 ===================
-Installs (Python) supervisor and provides resources to configure services
+Installs (Python) supervisor and provides resources to configure programs
 
 
 Requirements
@@ -29,22 +29,22 @@ Attributes
 
 Resources/Providers
 -------------------
-### supervisor\_service
+### supervisor\_program
 
 #### Actions
 
-The default action is the array `[:enable, :start]`. Actions use the `supervisorctl` program.
+The default action is the array `[:enable, :start]`. Actions use the `supervisorctl` application.
 
-- :enable - enables the service at boot time
-- :disable - disables the service at boot time
-- :start - starts the service
-- :stop - stops the service
-- :restart - restarts the service
-- :reload - reloads the service
+- :enable - enables the program at boot time
+- :disable - disables the program at boot time
+- :start - starts the program
+- :stop - stops the program
+- :restart - restarts the program
+- :reload - reloads the program
 
 #### Attribute Parameters
 
-- `:service_name` - (*Name Attribute*), a string, name of the service
+- `:program_name` - (*Name Attribute*), a string, name of the program
 
 The following attributes are used in the program.conf.erb as the values for the corresponding configuration option. See [the supervisor documentation](http://supervisord.org/configuration.html#program-x-section-values) for more information about each setting, including applicable defaults.
 
@@ -80,7 +80,7 @@ The following attributes are used in the program.conf.erb as the values for the 
 #### Examples
 
 ```ruby
-supervisor_service "celery" do
+supervisor_program "celery" do
   action :enable
   autostart false
   user "nobody"
@@ -100,10 +100,12 @@ License & Authors
 - Author:: Gilles Devaux <gilles.devaux@gmail.com>
 - Author:: Sam Clements <sam.clements@datasift.com>
 - Author:: Chris Jerdonek <chris.jerdonek@gmail.com>
+- Author:: Mal Graty <mal.graty@googlemail.com>
 
 ```text
 Copyright:: 2011-2012, Opscode, Inc <legal@opscode.com>
 Copyright:: 2011, Formspring.me
+Copyright:: 2014, idio, Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

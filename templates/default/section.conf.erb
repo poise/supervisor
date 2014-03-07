@@ -1,0 +1,8 @@
+[<%= @type %>:<%= @name %>]
+<% @opts.each do |k, v| %>
+<%= k %>=<%= case
+  when v.is_a?(Array) then v.join(',')
+  when v.is_a?(Hash) then v.sort.map{ |k, v| "#{k}=\"#{v}\"" }.join(',')
+  else v.to_s
+end %>
+<% end %>

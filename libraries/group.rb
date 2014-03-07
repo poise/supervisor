@@ -1,9 +1,9 @@
 #
-# Author:: Gilles Devaux <gilles.devaux@gmail.com>
+# Author:: Mal Graty <mal.graty@googlemail.com>
 # Cookbook Name:: supervisor
-# Resource:: group
+# Library:: group
 #
-# Copyright:: 2011, Formspring.me
+# Copyright:: 2014, idio Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,13 +18,20 @@
 # limitations under the License.
 #
 
-actions :enable, :disable, :start, :stop, :restart, :reload
+require_relative '_section'
 
-def initialize(*args)
-  super
-  @action = [:enable, :start]
+class Chef
+  class Resource::SupervisorGroup < Resource::SupervisorSection
+    # localise name attribute
+    alias_method :group_name, :section_name
+
+    # http://supervisord.org/configuration.html#group-x-section-values
+    option :programs, true, :kind_of => Array, :cannot_be => :empty
+    option :priority, :kind_of => Integer
+
+    def initialize(*args)
+      super
+      @type = 'group'
+    end
+  end
 end
-
-attribute :group_name, :kind_of => String, :name_attribute => true
-attribute :programs, :kind_of => Array, :default => []
-attribute :priority, :kind_of => Integer
