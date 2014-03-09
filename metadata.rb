@@ -11,4 +11,4 @@ recipe           'supervisor', 'Installs and configures supervisor'
   supports os
 end
 
-depends 'python'
+depends 'python', '~> 1.4.6'

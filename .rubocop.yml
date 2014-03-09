@@ -1,0 +1,11 @@
+ClassAndModuleChildren:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+HashSyntax:
+  EnforcedStyle: hash_rockets
