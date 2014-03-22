@@ -87,6 +87,15 @@ Same as `supervisor_program` but with additional attributes for [eventlisteners]
 
 Uses the same actions as `supervisor_program`, but only supports [group attributes](http://supervisord.org/configuration.html#group-x-section-values).
 
+### Other
+
+Two legacy resources are included for backwards compatability; 
+
+  - `supervisor_service`, superseeded by `supervisor_program` and `supervisor_eventlistener`, and
+  - `supervisor_fcgi`, superseeded by `supervisor_fcgi_program`
+
+These resources are **deprecated** and provided solely for compatabily with the current API. They will be removed in a future release.
+
 
 Recipes
 -------
