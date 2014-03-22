@@ -6,18 +6,21 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: centos-5.10
   - name: centos-6.5
-  - name: fedora-20
-  - name: ubuntu-10.04
-    run_list:
-      - recipe[apt::default]
   - name: ubuntu-12.04
     run_list:
-      - recipe[apt::default]
+      - apt::default
 
 suites:
   - name: default
     run_list:
-      - recipe[supervisor::default]
-    attributes:
+      - supervisor::default
+
+  - name: supervisor_program
+    run_list:
+      - supervisor::default
+      - supervisor_program::enable
+      - supervisor_program::disable
+      - supervisor_program::start
+      - supervisor_program::stop
+      - supervisor_program::restart
