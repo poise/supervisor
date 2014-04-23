@@ -18,7 +18,7 @@
 #
 
 case node['supervisor']['install_method']
-when 'pip'
+when 'source'
   include_recipe 'python'
 
   # foodcritic FC023: we prefer not having the resource on non-smartos

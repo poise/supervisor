@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-default['supervisor']['install_method'] = 'pip'
+default['supervisor']['install_method'] = 'source'
 default['supervisor']['version'] = nil
 
 default['supervisor']['unix_http_server']['chmod'] = '700'
