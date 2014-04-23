@@ -34,6 +34,7 @@ when 'pip'
   end
 when 'package'
   package 'supervisor' do
+    action :upgrade
     version node['supervisor']['version']
   end
 else
