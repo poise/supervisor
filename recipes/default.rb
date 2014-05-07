@@ -34,7 +34,7 @@ when 'source'
   end
 when 'package'
   package 'supervisor' do
-    action :upgrade
+    action :install
     version node['supervisor']['version']
   end
 else
