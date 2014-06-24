@@ -68,7 +68,7 @@ template "/etc/default/supervisor" do
 end
 
 init_template_dir = value_for_platform_family(
-  ["rhel", "fedora"."centos"] => "rhel",
+  ["rhel", "fedora","centos"] => "rhel",
   "debian" => "debian"
 )
 
