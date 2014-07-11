@@ -1,7 +1,7 @@
-site :opscode
+source 'http://api.berkshelf.com'
 metadata
 
 group :integration do
-  cookbook 'apt', '~> 2.0'
-  cookbook 'yum', '~> 2.0'
+  cookbook 'apt'
+  cookbook 'supervisor_program', :path => './test/cookbooks/supervisor_program'
 end

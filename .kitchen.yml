@@ -1,18 +1,26 @@
-driver_plugin: vagrant
-driver_config:
-  require_chef_omnibus: true
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
 
 platforms:
+  - name: centos-6.5
   - name: ubuntu-12.04
     run_list:
-    - recipe[apt::default]
-  - name: ubuntu-10.04
-    run_list:
-      - recipe[apt::default]
-  - name: centos-6.4
-  - name: centos-5.9
+      - apt::default
 
 suites:
   - name: default
     run_list:
-      - recipe[supervisor::default]
+      - supervisor::default
+
+  - name: supervisor_program
+    run_list:
+      - supervisor::default
+      - supervisor_program::enable
+      - supervisor_program::disable
+      - supervisor_program::start
+      - supervisor_program::stop
+      - supervisor_program::restart
