@@ -140,8 +140,7 @@ case "$1" in
     ;;
   restart)
     echo -n "Restarting $DESC: "
-    start-stop-daemon --stop --quiet --pidfile \
-        /var/run/$NAME.pid --exec $DAEMON
+    start-stop-daemon --stop --quiet --pidfile $PIDFILE
     [ -n "$DODTIME" ] && sleep $DODTIME
     start-stop-daemon --start --quiet --pidfile \
         /var/run/$NAME.pid --exec $DAEMON -- $DAEMON_OPTS
