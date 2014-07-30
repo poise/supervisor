@@ -91,8 +91,8 @@ force_stop() {
 case "$1" in
   start)
     echo -n "Starting $DESC: "
-    start-stop-daemon --start --quiet --pidfile $PIDFILE \
-        --exec $DAEMON -- $DAEMON_OPTS
+    start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE \
+        --startas $DAEMON -- $DAEMON_OPTS
     test -f $PIDFILE || sleep 1
         if running ; then
             echo "$NAME."
@@ -133,18 +133,17 @@ case "$1" in
     #   just the same as "restart" except that it does nothing if the
     #   daemon isn't already running.
     # check wether $DAEMON is running. If so, restart
-    start-stop-daemon --stop --test --quiet --pidfile \
-        /var/run/$NAME.pid --exec $DAEMON \
+    start-stop-daemon --stop --test --quiet --pidfile $PIDFILE \
+        --startas $DAEMON \
     && $0 restart \
     || exit 0
     ;;
   restart)
     echo -n "Restarting $DESC: "
-    start-stop-daemon --stop --quiet --pidfile \
-        /var/run/$NAME.pid --exec $DAEMON
+    start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
     [ -n "$DODTIME" ] && sleep $DODTIME
-    start-stop-daemon --start --quiet --pidfile \
-        /var/run/$NAME.pid --exec $DAEMON -- $DAEMON_OPTS
+    start-stop-daemon --start --quiet --pidfile $PIDFILE \
+        --startas $DAEMON -- $DAEMON_OPTS
     echo "$NAME."
     ;;
   status)
