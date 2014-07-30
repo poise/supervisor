@@ -36,3 +36,7 @@ default['supervisor']['logfile_backups'] = 10
 default['supervisor']['loglevel'] = 'info'
 default['supervisor']['minfds'] = 1024
 default['supervisor']['minprocs'] = 200
+
+# Superlance
+default['supervisor']['superlance'] = false  # Should install
+default['supervisor']['superlance_version'] = '0.8'

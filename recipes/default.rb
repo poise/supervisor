@@ -31,6 +31,10 @@ python_pip "supervisor" do
   version node['supervisor']['version'] if node['supervisor']['version']
 end
 
+# Install superlance
+include_recipe 'supervisor::superlance' if node['supervisor']['superlance']
+
+
 directory node['supervisor']['dir'] do
   owner "root"
   group "root"
