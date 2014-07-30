@@ -14,6 +14,9 @@ stopwaitsecs=<%= @prog.stopwaitsecs %>
 <% unless @prog.stopasgroup.nil? %>
 stopasgroup=<%= @prog.stopasgroup %>
 <% end %>
+<% unless @prog.killasgroup.nil? %>
+killasgroup=<%= @prog.killasgroup %>
+<% end %>
 <% if @prog.user %>
 user=<%= @prog.user %>
 <% end %>
