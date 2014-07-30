@@ -48,25 +48,25 @@ action :disable do
 end
 
 action :start do
-  execute "supervisorctl start #{new_resource.group_name}" do
+  execute "supervisorctl start #{new_resource.group_name}:*" do
     user "root"
   end
 end
 
 action :stop do
-  execute "supervisorctl stop #{new_resource.group_name}" do
+  execute "supervisorctl stop #{new_resource.group_name}:*" do
     user "root"
   end
 end
 
 action :restart  do
-  execute "supervisorctl restart #{new_resource.group_name}" do
+  execute "supervisorctl restart #{new_resource.group_name}:*" do
     user "root"
   end
 end
 
 action :reload  do
-  execute "supervisorctl restart #{new_resource.group_name}" do
+  execute "supervisorctl restart #{new_resource.group_name}:*" do
     user "root"
   end
 end
