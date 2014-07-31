@@ -10,7 +10,6 @@ platforms:
   run_list:
     - recipe[apt]
 - name: centos-6.4
-- name: centos-5.9
 
 suites:
 - name: default

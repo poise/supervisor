@@ -6,7 +6,6 @@ env:
   - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="ubuntu-1204" KITCHEN_SUITE="default"
   - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="ubuntu-1004" KITCHEN_SUITE="default"
   - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="centos-64" KITCHEN_SUITE="default"
-  - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="centos-59" KITCHEN_SUITE="default"
   global:
   - USE_SYSTEM_GECODE=true
   - KITCHEN_LOCAL_YAML=.kitchen.travis.yml
