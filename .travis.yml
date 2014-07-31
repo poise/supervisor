@@ -15,7 +15,7 @@ before_install:
 - sudo apt-get install libgecode-dev
 bundler_args: "--deployment --binstubs"
 script:
-- "./bin/foodcritic -f any ."
+- "./bin/foodcritic ."
 - ruby -e 'IO.write(".docker.pass", ENV["KITCHEN_DOCKER_PASS"])'
 - openssl rsa -in .docker.pem -passin file:.docker.pass -out .docker.key
 - wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O docker
