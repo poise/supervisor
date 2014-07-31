@@ -1,0 +1,24 @@
+language: ruby
+rvm:
+- 1.9.3-p484
+env:
+  matrix:
+  - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="ubuntu-1204" KITCHEN_SUITE="default"
+  - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="ubuntu-1004" KITCHEN_SUITE="default"
+  - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="centos-64" KITCHEN_SUITE="default"
+  - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="centos-59" KITCHEN_SUITE="default"
+  global:
+  - USE_SYSTEM_GECODE=true
+  - KITCHEN_LOCAL_YAML=.kitchen.travis.yml
+  - secure: PbiTzcRVGwYNJCd0CNgasmnOwMoGL8XGQ4WnRcQpI2VEiCeeAnWrja2KNq6DlNXCiQvRUwVqG6ggF18QaruutsShbEHZ+xki392wbEKuaiz63Yqa1bSIIzzK8vv+X1kt9mkdnFOKt/PCOgnRqY86AclysORDdy+F8Ul4vgZ46+I=
+before_install:
+- sudo apt-get update
+- sudo apt-get install libgecode-dev
+bundler_args: "--deployment --binstubs"
+script:
+- "./bin/foodcritic -f any ."
+- ruby -e 'IO.write(".docker.pass", ENV["KITCHEN_DOCKER_PASS"])'
+- openssl rsa -in .docker.pem -passin file:.docker.pass -out .docker.key
+- wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O docker
+- chmod +x docker
+- "./bin/kitchen test -d always $KITCHEN_SUITE-$KITCHEN_PLATFORM"
