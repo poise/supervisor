@@ -6,7 +6,7 @@ Installs (Python) supervisor and provides resources to configure services
 Requirements
 ------------
 ### Platforms
-Supports Debian and RHEL based systems. Tested on Ubuntu 10.04, CentOS 5.10, CentOS 6.5.
+Supports Debian and RHEL based systems. Tested on Ubuntu 10.04, CentOS 6.5.
 
 ### Cookbooks
 - python
