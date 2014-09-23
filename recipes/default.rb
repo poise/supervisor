@@ -28,7 +28,7 @@ end
 
 python_pip "supervisor" do
   action :upgrade
-  version node['supervisor']['version'] if node['supervisor']['version']
+  version node['supervisor']['version'] if node['supervisor']['version'] and not node['supervisor']['version'] == :latest
 end
 
 directory node['supervisor']['dir'] do
