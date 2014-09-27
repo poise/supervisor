@@ -38,7 +38,7 @@ PIDFILE=/var/run/$NAME.pid
 # let some servers to die gracefully and
 # 'restart' will not work
 
-DODTIME=<%= default['supervisor']['init_script']['stop_wait_secs'] %>
+DODTIME=<%= node['supervisor']['init_script']['stop_wait_secs'] %>
 
 # Include supervisor defaults if available
 if [ -f /etc/default/supervisor ] ; then
