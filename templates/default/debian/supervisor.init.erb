@@ -145,6 +145,9 @@ case "$1" in
     echo -n "Restarting $DESC: "
     start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
     [ -n "$DODTIME" ] && sleep $DODTIME
+    if running ; then
+        force_stop
+    fi
     start-stop-daemon --start --quiet --pidfile $PIDFILE \
         --startas $DAEMON -- $DAEMON_OPTS
     echo "$NAME."
