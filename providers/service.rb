@@ -25,13 +25,9 @@ action :enable do
 end
 
 action :disable do
-  if current_resource.state == 'UNAVAILABLE'
-    Chef::Log.info "#{new_resource} is already disabled."
-  else
     converge_by("Disabling #{new_resource}") do
       disable_service
     end
-  end
 end
 
 action :start do
@@ -114,6 +110,7 @@ def disable_service
   file "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
     action :delete
     notifies :run, "execute[supervisorctl update]", :immediately
+    not_if !File.exist?("#{node['supervisor']['dir']}/#{new_resource.service_name}.conf")
   end
 end
 
