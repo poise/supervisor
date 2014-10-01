@@ -110,7 +110,7 @@ def disable_service
   file "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
     action :delete
     notifies :run, "execute[supervisorctl update]", :immediately
-    not_if !File.exist?("#{node['supervisor']['dir']}/#{new_resource.service_name}.conf")
+    not_if !File.exists?("#{node['supervisor']['dir']}/#{new_resource.service_name}.conf")
   end
 end
 
