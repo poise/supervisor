@@ -14,18 +14,86 @@ Supports Debian and RHEL based systems. Tested on Ubuntu 12.04, 10.04, CentOS 6.
 
 Attributes
 ----------
-- `node['supervisor']['inet_port']` - The port on which you want to serve the internal web-based admin dashboard, e.g. `'localhost:9001'`
-- `node['supervisor']['inet_username']` - The username for authentication to this HTTP server
-- `node['supervisor']['inet_password']` - The password for authentication to this HTTP server (supports both cleartext and SHA-1 hashed passwords prefixed by `{SHA}`)
-- `node['supervisor']['dir']` - location of supervisor config files
-- `node['supervisor']['log_dir']` - location of supervisor logs
-- `node['supervisor']['logfile_maxbytes']` - max bytes for the supervisord logfile before it is rotated rotated, default `'50MB'`
-- `node['supervisor']['logfile_backups']` - the number of backups of that logfile to keep, default `10`
-- `node['supervisor']['loglevel']` - the minimum severity for those log messages, default `'info'`
-- `node['supervisor']['minfds']` - The minimum number of file descriptors that must be available before supervisord will start successfully.
-- `node['supervisor']['minprocs']` - The minimum number of process descriptors that must be available before supervisord will start successfully.
-- `node['supervisor']['version']` - Sets the version of supervisor to install, must be 3.0+ to use minprocs and minfds.
-- `node['supervisor']['socket_file']` - location of supervisor socket file.
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Default</th>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:inet_port]</tt></td>
+    <td>String</td>
+    <td>The port on which you want to serve the internal web-based admin dashboard</td>
+    <td><tt>nil</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:inet_username]</tt></td>
+    <td>String</td>
+    <td>The username for authentication to this HTTP server</td>
+    <td><tt>nil</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:inet_password]</tt></td>
+    <td>String</td>
+    <td>The password for authentication to this HTTP server (supports both cleartext and SHA-1 hashed passwords prefixed by `{SHA}`)</td>
+    <td><tt>nil</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:dir]</tt></td>
+    <td>String</td>
+    <td>location of supervisor config files/td>
+    <td>smartos: <tt> '/opt/local/etc/supervisor.d'</tt> others: <tt>'/etc/supervisor.d'</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:log_dir]</tt></td>
+    <td>String</td>
+    <td>location of supervisor logs</td>
+    <td><tt>'/var/log/supervisor'</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:logfile_maxbytes]</tt></td>
+    <td>String</td>
+    <td>max bytes for the supervisord logfile before it is rotated rotated</td>
+    <td><tt>'50MB'</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:logfile_backups]</tt></td>
+    <td>Integer</td>
+    <td>the number of backups of that logfile to keep</td>
+    <td><tt>10</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:loglevel]</tt></td>
+    <td>String</td>
+    <td>the minimum severity for those log messages</td>
+    <td><tt>'info'</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:minfds]</tt></td>
+    <td>Integer</td>
+    <td>The minimum number of file descriptors that must be available before supervisord will start successfully.</td>
+    <td><tt>1024</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:minprocs]</tt></td>
+    <td>Integer</td>
+    <td>The minimum number of process descriptors that must be available before supervisord will start successfully.</td>
+    <td><tt>200</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:version]</tt></td>
+    <td>String</td>
+    <td><Sets the version of supervisor to install, must be 3.0+ to use minprocs and minfds./td>
+    <td><tt>No default. Latest will be installed if not set.</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:supervisor][:socket_file]</tt></td>
+    <td>String</td>
+    <td>location of supervisor socket file.</td>
+    <td><tt>'/var/run/supervisor.sock'</tt></td>
+  </tr>
+</table>
 
 
 Resources/Providers
