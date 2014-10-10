@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "python"
+unless platform_family?("arch")
+  include_recipe "python"
+end
 
 # foodcritic FC023: we prefer not having the resource on non-smartos
 if platform_family?("smartos")
