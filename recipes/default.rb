@@ -91,6 +91,7 @@ when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu"
   service "supervisor" do
     supports :status => true, :restart => true
     action [:enable, :start]
+    subscribes :restart, "template[#{node['supervisor']['conffile']}]"
   end
 when "smartos"
   directory "/opt/local/share/smf/supervisord" do
