@@ -17,18 +17,24 @@
 # limitations under the License.
 #
 
+default['supervisor']['use_package'] = false
 default['supervisor']['unix_http_server']['chmod'] = '700'
 default['supervisor']['unix_http_server']['chown'] = 'root:root'
 default['supervisor']['inet_port'] = nil
 default['supervisor']['inet_username'] = nil
 default['supervisor']['inet_password'] = nil
 case node['platform_family']
-when "smartos"
-  default['supervisor']['dir'] = '/opt/local/etc/supervisor.d'
-  default['supervisor']['conffile'] = '/opt/local/etc/supervisord.conf'
-else
-  default['supervisor']['dir'] = '/etc/supervisor.d'
-  default['supervisor']['conffile'] = '/etc/supervisord.conf'
+  when "smartos"
+    default['supervisor']['dir'] = '/opt/local/etc/supervisor.d'
+    default['supervisor']['conffile'] = '/opt/local/etc/supervisord.conf'
+  else
+    if node['supervisor']['use_package']
+      default['supervisor']['dir'] = '/etc/supervisor/conf.d'
+      default['supervisor']['conffile'] = '/etc/supervisor/supervisord.conf'
+    else
+      default['supervisor']['dir'] = '/etc/supervisor.d'
+      default['supervisor']['conffile'] = '/etc/supervisord.conf'
+    end
 end
 default['supervisor']['log_dir'] = '/var/log/supervisor'
 default['supervisor']['logfile_maxbytes'] = '50MB'

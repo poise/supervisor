@@ -14,6 +14,7 @@ Supports Debian and RHEL based systems. Tested on Ubuntu 12.04, 10.04, CentOS 6.
 
 Attributes
 ----------
+- `node['supervisor']['use_package']` - specify whether to use package, default install is via pip
 - `node['supervisor']['inet_port']` - The port on which you want to serve the internal web-based admin dashboard, e.g. `'localhost:9001'`
 - `node['supervisor']['inet_username']` - The username for authentication to this HTTP server
 - `node['supervisor']['inet_password']` - The password for authentication to this HTTP server (supports both cleartext and SHA-1 hashed passwords prefixed by `{SHA}`)
