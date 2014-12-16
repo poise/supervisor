@@ -26,6 +26,19 @@ Attributes
 - `node['supervisor']['minprocs']` - The minimum number of process descriptors that must be available before supervisord will start successfully.
 - `node['supervisor']['version']` - Sets the version of supervisor to install, must be 3.0+ to use minprocs and minfds.
 - `node['supervisor']['socket_file']` - location of supervisor socket file.
+- `node['supervisor']['ctlplugins']` - entries for `supervisorctl` plugins.
+  For instance, to install [serialrestart](https://pypi.python.org/pypi/supervisor-serialrestart), you'd manually add this to your config:
+
+    ```text
+    [ctlplugin:serialrestart]
+    supervisor.ctl_factory = supervisorserialrestart.controllerplugin:make_serialrestart_controllerplugin
+	```	
+  Which can be achieved using
+    ```ruby
+	node.default['supervisor']['ctlplugins'] = ({
+	 'serialrestart'=> 'supervisorserialrestart.controllerplugin:make_serialrestart_controllerplugin'
+     })
+	 ```
 
 
 Resources/Providers

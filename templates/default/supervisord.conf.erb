@@ -49,5 +49,13 @@ serverurl=unix:///var/run//supervisor.sock ; use a unix:// URL  for a unix socke
 ; interpreted as relative to this file.  Included files *cannot*
 ; include files themselves.
 
+
+<% @node['supervisor']['ctlplugins'] && @node['supervisor']['ctlplugins'].each do |k,v| %>
+
+[ctlplugin:<%=k%>]
+<%=v%>
+
+<%end%>
+
 [include]
 files = <%= @node['supervisor']['dir'] %>/*.conf
