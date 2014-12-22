@@ -29,7 +29,7 @@ start() {
     echo -n "Starting supervisor: "
     # status() returns 0 if and only if the service is properly started.
     status > /dev/null && echo "already running" && return 0
-    daemon "<%= @supervisord %> -c <%= node['supervisor']['conffile'] %> <%= @node['supervisor']['daemon_options'] %> -p $PIDFILE"
+    daemon "<%= @supervisord %> -c <%= node['supervisor']['conffile'] %> <%= @node['supervisor']['daemon_options'] %> --pidfile=$PIDFILE"
     RETVAL=$?
     echo
     [ $RETVAL -ne 0 ] && return $RETVAL
