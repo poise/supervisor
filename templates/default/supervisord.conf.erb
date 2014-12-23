@@ -40,6 +40,13 @@ minprocs = <%= @supervisord_minprocs %>
 [rpcinterface:supervisor]
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
+<% @node['supervisor']['rpcplugins'] && @node['supervisor']['rpcplugins'].each do |k,v| %>
+
+[rpcinterface:<%=k%>]
+supervisor.rpcinterface_factory = <%=v%>
+
+<%end%>
+
 [supervisorctl]
 serverurl=unix:///var/run//supervisor.sock ; use a unix:// URL  for a unix socket
 

@@ -38,3 +38,4 @@ default['supervisor']['minfds'] = 1024
 default['supervisor']['minprocs'] = 200
 default['supervisor']['socket_file'] = '/var/run/supervisor.sock'
 default['supervisor']['ctlplugins'] = {}
+default['supervisor']['rpcplugins'] = {}
