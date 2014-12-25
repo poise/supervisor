@@ -76,7 +76,7 @@ init_template_dir = value_for_platform_family(
 
 case node['platform']
 when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu"
-  template "/etc/init.d/supervisor" do
+  t=template "/etc/init.d/supervisor" do
     source "#{init_template_dir}/supervisor.init.erb"
     owner "root"
     group "root"
@@ -91,6 +91,7 @@ when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu"
   service "supervisor" do
     supports :status => true, :restart => true
     action [:enable, :start]
+    subscribes :restart, t
   end
 when "smartos"
   directory "/opt/local/share/smf/supervisord" do
