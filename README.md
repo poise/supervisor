@@ -1,5 +1,8 @@
 supervisor Cookbook
 ===================
+
+[![Build Status](https://travis-ci.org/poise/supervisor.svg?branch=master)](https://travis-ci.org/poise/supervisor)
+
 Installs (Python) supervisor and provides resources to configure services
 
 
@@ -32,7 +35,7 @@ Attributes
     ```text
     [ctlplugin:serialrestart]
     supervisor.ctl_factory = supervisorserialrestart.controllerplugin:make_serialrestart_controllerplugin
-	```	
+	```
   Which can be achieved using
     ```ruby
 	node.default['supervisor']['ctlplugins'] = ({
