@@ -19,18 +19,14 @@
 #
 
 action :enable do
-  converge_by("Enabling #{ new_resource }") do
-    enable_service
-  end
+  enable_service
 end
 
 action :disable do
   if current_resource.state == 'UNAVAILABLE'
     Chef::Log.info "#{new_resource} is already disabled."
   else
-    converge_by("Disabling #{new_resource}") do
-      disable_service
-    end
+    disable_service
   end
 end
 
