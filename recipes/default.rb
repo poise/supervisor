@@ -71,7 +71,7 @@ end
 
 init_template_dir = value_for_platform_family(
   ["rhel", "fedora"] => "rhel",
-  "debian" => "debian"
+  ["debian", "raspbian"] => "debian"
 )
 
 case node['platform']
