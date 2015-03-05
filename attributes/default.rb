@@ -31,6 +31,7 @@ else
   default['supervisor']['conffile'] = '/etc/supervisord.conf'
 end
 default['supervisor']['log_dir'] = '/var/log/supervisor'
+default['supervisor']['environment']={}
 default['supervisor']['logfile_maxbytes'] = '50MB'
 default['supervisor']['logfile_backups'] = 10
 default['supervisor']['loglevel'] = 'info'
