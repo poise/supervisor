@@ -33,6 +33,7 @@ end
 
 python_pip "supervisor" do
   action :upgrade
+  package_name "#{node['supervisor']['source']}@#{node['supervisor']['commit']}" if node['supervisor']['commit']
   version node['supervisor']['version'] if node['supervisor']['version']
 end
 
