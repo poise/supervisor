@@ -1,23 +1,27 @@
+sudo: false
+cache: bundler
 language: ruby
 rvm:
-- 1.9.3-p484
+- 2.1.4
 env:
   matrix:
-  - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="ubuntu-1204" KITCHEN_SUITE="default"
-  - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="ubuntu-1004" KITCHEN_SUITE="default"
-  - KITCHEN_CHEF_VERSION="latest" KITCHEN_PLATFORM="centos-64" KITCHEN_SUITE="default"
+  - CHEF_VERSION="11"
+  - CHEF_VERSION="12"
   global:
   - USE_SYSTEM_GECODE=true
   - KITCHEN_LOCAL_YAML=.kitchen.travis.yml
-  - secure: PbiTzcRVGwYNJCd0CNgasmnOwMoGL8XGQ4WnRcQpI2VEiCeeAnWrja2KNq6DlNXCiQvRUwVqG6ggF18QaruutsShbEHZ+xki392wbEKuaiz63Yqa1bSIIzzK8vv+X1kt9mkdnFOKt/PCOgnRqY86AclysORDdy+F8Ul4vgZ46+I=
+  - secure: lNU84s6dn1eXYHSBMPqjM219OfN2Cx8XKjcsXsb1UTV8BASfClWdsJuV/I5uwKMTHgnB+rK945BzA28SmCF2ixhLKbEbjh8TcnIf2s6qyxUWZMXEeYgBdW19ylD5ZiiIdLBvoz0tdrN+0uJwEENADCfQt/AAtD7ojuqa3oG+ZV8=
 before_install:
-- sudo apt-get update
-- sudo apt-get install libgecode-dev
+- curl -o ~/gecode.tar.gz https://poise-gecode.s3.amazonaws.com/gecode-3.7.3-ubuntu12.04-x86_64.tar.gz
+- tar xzf ~/gecode.tar.gz -C ~
+- rm ~/gecode.tar.gz
+- bundle config build.dep_selector "--with-cflags=\"-I$HOME/gecode-3.7.3/include\"
+  --with-cppflags=\"-I$HOME/gecode-3.7.3/include\" --with-ldflags=\"-L$HOME/gecode-3.7.3/lib
+  -Wl,-rpath=$HOME/gecode-3.7.3/lib\""
 bundler_args: "--deployment --binstubs"
 script:
 - "./bin/foodcritic ."
-- ruby -e 'IO.write(".docker.pass", ENV["KITCHEN_DOCKER_PASS"])'
-- openssl rsa -in .docker.pem -passin file:.docker.pass -out .docker.key
+- openssl rsa -in .docker.pem -passin env:KITCHEN_DOCKER_PASS -out .docker.key
 - wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O docker
 - chmod +x docker
-- "./bin/kitchen test -d always $KITCHEN_SUITE-$KITCHEN_PLATFORM"
+- "./bin/kitchen test -d always"

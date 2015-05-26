@@ -37,6 +37,5 @@ default['supervisor']['loglevel'] = 'info'
 default['supervisor']['minfds'] = 1024
 default['supervisor']['minprocs'] = 200
 default['supervisor']['socket_file'] = '/var/run/supervisor.sock'
-
 default['supervisor']['init_script']['stop_wait_secs'] = 10
-
+default['supervisor']['ctlplugins'] = {}
