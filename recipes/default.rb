@@ -84,7 +84,8 @@ when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu", "raspbian"
     variables({
       # TODO: use this variable in the debian platform-family template
       # instead of altering the PATH and calling "which supervisord".
-      :supervisord => "#{node['python']['prefix_dir']}/bin/supervisord"
+      :supervisord => node['platform'] == 'amazon' ? "/usr/local/bin/supervisord"
+                              : "#{node['python']['prefix_dir']}/bin/supervisord"
     })
   end
 
