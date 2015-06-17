@@ -29,7 +29,6 @@ end
 python_pip "supervisor" do
   action :upgrade
   version node['supervisor']['version'] if node['supervisor']['version']
-  options "--install-option='--install-scripts=/usr/bin'"
 end
 
 directory node['supervisor']['dir'] do
@@ -82,11 +81,6 @@ when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu", "raspbian"
     owner "root"
     group "root"
     mode "755"
-    variables({
-      # TODO: use this variable in the debian platform-family template
-      # instead of altering the PATH and calling "which supervisord".
-      :supervisord => "#{node['python']['prefix_dir']}/bin/supervisord"
-    })
   end
 
   service "supervisor" do
