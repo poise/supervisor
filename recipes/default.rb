@@ -29,6 +29,7 @@ end
 python_pip "supervisor" do
   action :upgrade
   version node['supervisor']['version'] if node['supervisor']['version']
+  options "--install-option='--install-scripts=/usr/bin'"
 end
 
 directory node['supervisor']['dir'] do
