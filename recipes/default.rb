@@ -38,6 +38,18 @@ directory node['supervisor']['dir'] do
   recursive true
 end
 
+if node['supervisor']['inet_credentials_from_data_bag']
+  svd_data_bag = Chef::EncryptedDataBagItem.load(
+    node['supervisor']['inet_credentials_data_bag_name'],
+    node['supervisor']['inet_credentials_data_bag_item']
+  )
+  inet_username = svd_data_bag['username']
+  inet_password = svd_data_bag['password']
+else
+  inet_username = node['supervisor']['inet_username']
+  inet_password = node['supervisor']['inet_password']
+end
+
 template node['supervisor']['conffile'] do
   source "supervisord.conf.erb"
   owner "root"
@@ -45,8 +57,8 @@ template node['supervisor']['conffile'] do
   mode "644"
   variables({
     :inet_port => node['supervisor']['inet_port'],
-    :inet_username => node['supervisor']['inet_username'],
-    :inet_password => node['supervisor']['inet_password'],
+    :inet_username => inet_username,
+    :inet_password => inet_password,
     :supervisord_minfds => node['supervisor']['minfds'],
     :supervisord_minprocs => node['supervisor']['minprocs'],
     :supervisor_version => node['supervisor']['version'],

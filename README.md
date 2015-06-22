@@ -18,6 +18,9 @@ Supports Debian and RHEL based systems. Tested on Ubuntu 12.04, 10.04, CentOS 6.
 Attributes
 ----------
 - `node['supervisor']['inet_port']` - The port on which you want to serve the internal web-based admin dashboard, e.g. `'localhost:9001'`
+- `node['supervisor']['inet_credentials_from_data_bag']` - Enable or disable encrypted data bag usage for credentials
+- `node['supervisor']['inet_credentials_data_bag_name']` - The data bag name for credentials, e.g. `'supervisor'`
+- `node['supervisor']['inet_credentials_data_bag_item']` - The data bag name for credentials, e.g. `'instance'`
 - `node['supervisor']['inet_username']` - The username for authentication to this HTTP server
 - `node['supervisor']['inet_password']` - The password for authentication to this HTTP server (supports both cleartext and SHA-1 hashed passwords prefixed by `{SHA}`)
 - `node['supervisor']['dir']` - location of supervisor config files

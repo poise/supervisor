@@ -20,6 +20,9 @@
 default['supervisor']['unix_http_server']['chmod'] = '700'
 default['supervisor']['unix_http_server']['chown'] = 'root:root'
 default['supervisor']['inet_port'] = nil
+default['supervisor']['inet_credentials_from_data_bag'] = false
+default['supervisor']['inet_credentials_data_bag_name'] = 'supervisor'
+default['supervisor']['inet_credentials_data_bag_item'] = 'example'
 default['supervisor']['inet_username'] = nil
 default['supervisor']['inet_password'] = nil
 case node['platform_family']
