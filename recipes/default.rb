@@ -32,9 +32,9 @@ python_pip "supervisor" do
 end
 
 directory node['supervisor']['dir'] do
-  owner "root"
-  group "root"
-  mode "755"
+  owner node['supervisor']['dir_owner']
+  group node['supervisor']['dir_group']
+  mode node['supervisor']['dir_mode']
   recursive true
 end
 
