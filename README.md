@@ -27,7 +27,8 @@ Attributes
 - `node['supervisor']['loglevel']` - the minimum severity for those log messages, default `'info'`
 - `node['supervisor']['minfds']` - The minimum number of file descriptors that must be available before supervisord will start successfully.
 - `node['supervisor']['minprocs']` - The minimum number of process descriptors that must be available before supervisord will start successfully.
-- `node['supervisor']['version']` - Sets the version of supervisor to install, must be 3.0+ to use minprocs and minfds.
+- `node['supervisor']['nocleanup']` - If true, retain child log files at startup, the default is false
+- `node['supervisor']['version']` - Sets the version of supervisor to install, must be 3.0+ to use minprocs, minfds and nocleanup.
 - `node['supervisor']['socket_file']` - location of supervisor socket file.
 - `node['supervisor']['ctlplugins']` - entries for `supervisorctl` plugins.
   For instance, to install [serialrestart](https://pypi.python.org/pypi/supervisor-serialrestart), you'd manually add this to your config:

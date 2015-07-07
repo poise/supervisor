@@ -36,7 +36,6 @@ default['supervisor']['logfile_backups'] = 10
 default['supervisor']['loglevel'] = 'info'
 default['supervisor']['minfds'] = 1024
 default['supervisor']['minprocs'] = 200
-# if true, retain child log files at startup, default false
 default['supervisor']['nocleanup'] = false
 default['supervisor']['socket_file'] = '/var/run/supervisor.sock'
 default['supervisor']['ctlplugins'] = {}
