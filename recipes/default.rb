@@ -49,6 +49,7 @@ template node['supervisor']['conffile'] do
     :inet_password => node['supervisor']['inet_password'],
     :supervisord_minfds => node['supervisor']['minfds'],
     :supervisord_minprocs => node['supervisor']['minprocs'],
+    :supervisord_nocleanup => node['supervisor']['nocleanup'],
     :supervisor_version => node['supervisor']['version'],
     :socket_file => node['supervisor']['socket_file'],
   })
