@@ -31,6 +31,13 @@ python_pip "supervisor" do
   version node['supervisor']['version'] if node['supervisor']['version']
 end
 
+# If rpcplugins are presented, try to install them
+node['supervisor']['rpcplugins'].each_key do |k|
+  python_pip "supervisor_#{k}" do
+    action :upgrade
+  end
+end
+
 directory node['supervisor']['dir'] do
   owner "root"
   group "root"

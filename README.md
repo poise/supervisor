@@ -43,6 +43,19 @@ Attributes
 	 'serialrestart'=> 'supervisorserialrestart.controllerplugin:make_serialrestart_controllerplugin'
      })
 	 ```
+- `node['supervisor']['rpcplugins']` - entries for `rpcinterface` extensions.
+  For instance, to install [twiddler](https://pypi.python.org/pypi/supervisor-twiddler), you'd manually add this to your config:
+
+    ```text
+    [rpcinterface:twiddler]
+    supervisor.rpcinterface_factory = supervisor_twiddler.rpcinterface:make_twiddler_rpcinterface
+	```
+  Which can be achieved using
+    ```ruby
+	node.default['supervisor']['rpcplugins'] = ({
+	 'twiddler'=> 'supervisor_twiddler.rpcinterface:make_twiddler_rpcinterface'
+     })
+	 ```
 
 
 Resources/Providers
