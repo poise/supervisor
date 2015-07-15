@@ -30,6 +30,9 @@ else
   default['supervisor']['dir'] = '/etc/supervisor.d'
   default['supervisor']['conffile'] = '/etc/supervisord.conf'
 end
+default['supervisor']['dir_owner'] = 'root'
+default['supervisor']['dir_group'] = 'root'
+default['supervisor']['dir_mode'] = '755'
 default['supervisor']['log_dir'] = '/var/log/supervisor'
 default['supervisor']['logfile_maxbytes'] = '50MB'
 default['supervisor']['logfile_backups'] = 10
