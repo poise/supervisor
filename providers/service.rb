@@ -146,7 +146,7 @@ end
 
 def load_current_resource
   @current_resource = Chef::Resource::SupervisorService.new(@new_resource.name)
-  @current_resource.state = get_current_state(@new_resource.name)
+  @current_resource.state = get_current_state(@new_resource.service_name)
 end
 
 def wait_til_state(state,max_tries=20)
