@@ -12,11 +12,24 @@
 
 source /etc/rc.d/init.d/functions
 
+NAME="supervisord"
+PIDFILE="/var/run/$NAME.pid"
+
+status() {
+  if [ -f $PIDFILE ]; then
+    echo "supervisord is running"
+    return 0
+  else
+    echo "supervisord is stopped"
+    return 3
+  fi
+}
+
 start() {
     echo -n "Starting supervisor: "
     # status() returns 0 if and only if the service is properly started.
-    status supervisord > /dev/null && echo "already running" && return 0
-    daemon "<%= @supervisord %> -c <%= node['supervisor']['conffile'] %> <%= @node['supervisor']['daemon_options'] %>"
+    status > /dev/null && echo "already running" && return 0
+    daemon "<%= @supervisord %> -c <%= node['supervisor']['conffile'] %> <%= @node['supervisor']['daemon_options'] %> --pidfile=$PIDFILE"
     RETVAL=$?
     echo
     [ $RETVAL -ne 0 ] && return $RETVAL
@@ -26,7 +39,7 @@ start() {
 
 stop() {
     echo -n "Shutting down supervisor: "
-    status supervisord > /dev/null
+    status > /dev/null
     # status() returns 3 if and only if the service is properly stopped.
     [ $? -eq 3 ] && echo "already stopped" && return 0
     killproc supervisord
@@ -44,7 +57,7 @@ case "$1" in
         stop
     ;;
     status)
-        status supervisord
+        status
     ;;
     restart)
         # Exit with an error if the shutdown was not successful.
