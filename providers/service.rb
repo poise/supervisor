@@ -24,6 +24,12 @@ action :enable do
   end
 end
 
+action :reread do
+  converge_by("Re-reading #{ new_resource }") do
+    reread_service
+  end
+end
+
 action :disable do
   if current_resource.state == 'UNAVAILABLE'
     Chef::Log.info "#{new_resource} is already disabled."
@@ -103,6 +109,30 @@ def enable_service
   if t.updated?
     e.run_action(:run)
   end
+end
+
+def reread_service
+  e = execute "supervisorctl reread" do
+    action :nothing
+    user "root"
+  end
+
+  t = template "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
+    source "program.conf.erb"
+    cookbook "supervisor"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :prog => new_resource
+    Chef::Log.info "supervisorctl reread [#{new_resource.service_name}] "
+    notifies :run, "execute[supervisorctl reread]", :immediately
+  end
+
+  t.run_action(:create)
+  if t.updated?
+    e.run_action(:run)
+  end
+
 end
 
 def disable_service
