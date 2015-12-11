@@ -92,10 +92,11 @@ when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu", "raspbian"
   service "supervisor" do
     supports :status => true, :restart => true
     action [:enable, :start]
-    subscribes :restart, "template[#{node['supervisor']['conffile']}]", :immediately
-    subscribes :restart, "/etc/init.d/supervisor", :immediately
-    subscribes :restart, "/etc/default/supervisor", :immediately if platform_family?("debian")
+    subscribes :restart, "template[#{node['supervisor']['conffile']}]", :delayed
+    subscribes :restart, "template[/etc/init.d/supervisor]", :delayed
+    subscribes :restart, "template]/etc/default/supervisor]", :delayed if platform_family?("debian")
   end
+
 when "smartos"
   directory "/opt/local/share/smf/supervisord" do
     owner "root"
