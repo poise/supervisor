@@ -109,7 +109,7 @@ end
 Recipes
 -------
 ### default
-Includes the python recipe, installs the supervisor PIP package and sets up supervisor.
+Includes the python recipe, installs the `supervisor` package (using `pip` by default) and sets up Supervisor. The `supervisor.install_method` can be set to `package` instead of `source` to install Supervisor using the system's package manager (assuming a `supervisor` package is availible).
 
 
 License & Authors

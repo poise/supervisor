@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+default['supervisor']['install_method'] = 'source'
+default['supervisor']['version'] = nil
+
 default['supervisor']['unix_http_server']['chmod'] = '700'
 default['supervisor']['unix_http_server']['chown'] = 'root:root'
 default['supervisor']['inet_port'] = nil
