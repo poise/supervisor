@@ -26,9 +26,13 @@ if platform_family?("smartos")
   end
 end
 
-python_pip "supervisor" do
-  action :upgrade
-  version node['supervisor']['version'] if node['supervisor']['version']
+if node['supervisor']['use_package']
+  package "supervisor"
+else
+  python_pip "supervisor" do
+    action :upgrade
+    version node['supervisor']['version'] if node['supervisor']['version']
+  end
 end
 
 directory node['supervisor']['dir'] do
