@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "python"
+unless platform_family?("arch")
+  include_recipe "python"
+end
 
 # foodcritic FC023: we prefer not having the resource on non-smartos
 if platform_family?("smartos")
@@ -26,9 +28,16 @@ if platform_family?("smartos")
   end
 end
 
-python_pip "supervisor" do
-  action :upgrade
-  version node['supervisor']['version'] if node['supervisor']['version']
+if platform_family?("arch")
+  package "supervisor" do
+    action :install
+  end
+
+else
+  python_pip "supervisor" do
+    action :upgrade
+    version node['supervisor']['version'] if node['supervisor']['version']
+  end
 end
 
 directory node['supervisor']['dir'] do
