@@ -1,0 +1,15 @@
+{
+  "id": "example",
+  "username": {
+    "encrypted_data": "jRL4B7zRZfGkE+urfoAm3TuFLzI3Fvifq+t6x54yC78rc5AVd98Tu6fDF9PS\nwFyk\n",
+    "iv": "QEPRmjTp/dj9CwR6XmcogQ==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "password": {
+    "encrypted_data": "kI6nL8epofQdElLMtaA4vuLsfaqt1zv2vtXosiRuGmuh2acIWoljGLkNOj7r\nFCW3\n",
+    "iv": "LusH3kpwaGBqNXeV+zsSuA==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  }
+}
