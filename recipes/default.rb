@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
+# Install
+python_runtime 'supervisor' do
+  version '2.7'
+end
+
 # foodcritic FC023: we prefer not having the resource on non-smartos
 if platform_family?("smartos")
   package "py27-expat" do
@@ -24,9 +29,9 @@ if platform_family?("smartos")
   end
 end
 
-package 'python-pip'
 python_package "supervisor" do
   action :upgrade
+  python 'supervisor'
   version node['supervisor']['version'] if node['supervisor']['version']
 end
 
@@ -84,7 +89,7 @@ when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu", "raspbian"
     variables({
       # TODO: use this variable in the debian platform-family template
       # instead of altering the PATH and calling "which supervisord".
-      :supervisord => "/usr/bin/supervisord"
+      :supervisord => "/usr/local/bin/supervisord"
     })
   end
 

@@ -4,7 +4,9 @@ driver:
 
 platforms:
 - name: ubuntu-16.04
+- name: ubuntu-14.04
 - name: debian-9
+- name: debian-8
 
 suites:
 - name: default
