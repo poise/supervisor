@@ -19,7 +19,7 @@
 
 # Install
 python_runtime 'supervisor' do
-  version '2.7'
+  version '2'
 end
 
 # foodcritic FC023: we prefer not having the resource on non-smartos
