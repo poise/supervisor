@@ -72,7 +72,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
-    ffi (1.9.6)
+    ffi (1.11.1)
     foodcritic (4.0.0)
       erubis
       gherkin (~> 2.11)
